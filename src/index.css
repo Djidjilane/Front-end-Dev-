@@ -1,0 +1,25 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Personnalisation de la barre de défilement pour Chrome, Edge, et Safari */
+.navbar-menu::-webkit-scrollbar {
+  width: 8px; /* Largeur de la barre de défilement */
+}
+
+.navbar-menu::-webkit-scrollbar-track {
+  background: #f1f1f1; /* Couleur de l'arrière-plan */
+  border-radius: 10px; /* Arrondi de l'arrière-plan */
+}
+
+.navbar-menu::-webkit-scrollbar-thumb {
+  background-color: #15803d; /* Couleur de la barre de défilement */
+  border-radius: 10px; /* Arrondi de la barre */
+  border: 2px solid #f1f1f1; /* Espace autour de la barre */
+}
+
+/* Personnalisation pour Firefox */
+.navbar-menu {
+  scrollbar-width: thin; /* Barre fine */
+  scrollbar-color: #15803d #f1f1f1; /* Barre (vert) et arrière-plan (gris) */
+}
