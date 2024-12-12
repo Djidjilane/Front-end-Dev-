@@ -1,0 +1,16 @@
+# Ignorer le dossier node_modules
+node_modules/
+
+# Ignorer les fichiers de logs
+*.log
+
+# Ignorer les caches de build
+.cache/
+
+# Ignorer les fichiers de configuration de l'IDE
+.vscode/
+.idea/
+
+# Ignorer les systèmes d'exploitation spécifiques
+.DS_Store
+Thumbs.db
