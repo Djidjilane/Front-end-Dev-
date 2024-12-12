@@ -5,14 +5,14 @@ import {
   Route,
   Routes,
 } from "react-router-dom";
-import LoginPage from "./pages/auth/login";
-import Welcome from "./pages/home";
-// import PrivateRoute from './routes/private-route';
-// import AdminRoute from './routes/admin-route';
-import NotFound404 from "./pages/error-page/404";
-import OptionAuthPage from "./pages/auth/option-auth";
-import PhoneVerificationPage from "./pages/auth/phone-verification";
-import OptionForgetPasswordPage from "./pages/auth/option-forget-password";
+import LoginPage from "./v1/pages/auth/login";
+import Welcome from "./v1/pages/home";
+// import PrivateRoute from './v1/routes/private-route';
+// import AdminRoute from './v1/routes/admin-route';
+import NotFound404 from "./v1/pages/error-page/404";
+import OptionAuthPage from "./v1/pages/auth/option-auth";
+import PhoneVerificationPage from "./v1/pages/auth/phone-verification";
+import OptionForgetPasswordPage from "./v1/pages/auth/option-forget-password";
 
 
 const App = () => {
