@@ -19,7 +19,7 @@ const NotFound404 = () => {
             to="/"
             className="mt-6 inline-block bg-blue-500 text-white px-6 py-3 rounded-lg hover:bg-blue-600 transition"
           >
-            Retour à l'accueil
+            Retour à l'accueil 
           </Link>
         </section>
         <div className="mt-8">
