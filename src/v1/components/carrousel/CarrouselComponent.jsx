@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 
 const CarrouselComponent = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -10,17 +10,17 @@ const CarrouselComponent = () => {
     "/images/slide-4.jpg",
   ];
 
-  // Fonction pour passer à l'image suivante
-  const nextSlide = () => {
+  // Utiliser useCallback pour éviter que nextSlide soit recréée à chaque rendu
+  const nextSlide = useCallback(() => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  };
+  }, [images.length]); // Ajout de images.length dans les dépendances
 
-  // Fonction pour revenir à l'image précédente
-  const prevSlide = () => {
+  // Utiliser useCallback pour éviter que prevSlide soit recréée à chaque rendu
+  const prevSlide = useCallback(() => {
     setCurrentIndex(
       (prevIndex) => (prevIndex - 1 + images.length) % images.length
     );
-  };
+  }, [images.length]); // Ajout de images.length dans les dépendances
 
   // Lancer un changement automatique d'image toutes les 3 secondes
   useEffect(() => {
@@ -28,7 +28,7 @@ const CarrouselComponent = () => {
 
     // Nettoyage de l'intervalle lors du démontage du composant
     return () => clearInterval(interval);
-  }, []); // L'effet se lance une seule fois au montage
+  }, [nextSlide]); // Ajout de nextSlide dans les dépendances
 
   return (
     <section className="relative w-full h-[60vh]">

@@ -79,7 +79,7 @@ const GamePreview = () => {
                 <h2 className="text-3xl font-semibold text-center text-[#15803D] mb-8">
                     Aperçu des Jeux
                 </h2>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                <div className="grid grid-cols-1 lg:p-0 p-4 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                     {games.map((game) => (
                         <div key={game.id} className="bg-white rounded-lg shadow-lg overflow-hidden hover:scale-105 transform transition duration-300 hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-[#15803D] focus:ring-offset-2 active:scale-95">
                             <img

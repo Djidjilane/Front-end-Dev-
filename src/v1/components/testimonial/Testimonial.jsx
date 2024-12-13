@@ -14,12 +14,12 @@ const TestimonialCard = ({ text, userName, rating, profilePicture, location, ema
   };
 
   return (
-    <div className="testimonial bg-white p-6 rounded-lg shadow-lg w-1/3">
+    <div className="testimonial bg-white lg:p-6 p-4  rounded-lg shadow-lg lg:w-1/3 w-full">
       <div className="flex items-center mb-4">
-        <img 
-          src={profilePicture} 
-          alt={`${userName}'s profile`} 
-          className="w-12 h-12 rounded-full mr-4" 
+        <img
+          src={profilePicture}
+          alt={`${userName}'s profile`}
+          className="w-12 h-12 rounded-full mr-4"
         />
         <div>
           <p className="text-md font-semibold">{userName}</p>
@@ -46,7 +46,7 @@ const Testimonial = () => {
     const fetchTestimonials = async () => {
       try {
         // Récupérer 3 utilisateurs
-        const response = await fetch('https://randomuser.me/api/?results=3'); 
+        const response = await fetch('https://randomuser.me/api/?results=3');
         const data = await response.json();
 
         // Liste de messages de témoignages divers
@@ -83,9 +83,12 @@ const Testimonial = () => {
   }, []); // Le useEffect se déclenche une seule fois lors du montage du composant
 
   return (
-    <section className="testimonials py-8  bg-gray-200">
-      <h2 className="text-3xl font-semibold text-[#15803D] text-center mb-6">Ce que disent nos joueurs</h2>
-      <div className="flex justify-center max-w-6xl  mx-auto space-x-6">
+    <section className="testimonials py-8 bg-gray-200">
+      <h2 className="text-3xl font-semibold text-[#15803D] text-center mb-6">
+        Ce que disent nos joueurs
+      </h2>
+
+      <div className="flex flex-col sm:flex-row justify-center lg:max-w-6xl w-full lg:p-0 p-4 lg:mx-auto space-y-6 sm:space-y-0 lg:space-x-6">
         {testimonialsData.map((testimonial, index) => (
           <TestimonialCard
             key={index}
@@ -99,6 +102,7 @@ const Testimonial = () => {
         ))}
       </div>
     </section>
+
   );
 };
 

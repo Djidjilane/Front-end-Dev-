@@ -10,7 +10,7 @@ import Notification from "./Notification";
 const LayoutComponent = ({ children }) => (
   <main className="">
     <div className="text-white">
-      {/* <Notification message="🚀 Nouveau jeu disponible! Jouez maintenant et gagnez des récompenses!" /> */}
+      <Notification message="🚀 Nouveau jeu disponible! Jouez maintenant et gagnez des récompenses!" />
       {/* Barre de navigation */}
       <Navbar />
       {/* Contenu principal de la page */}

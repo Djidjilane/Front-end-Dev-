@@ -8,7 +8,7 @@ const Footer = () => {
           {/* Copyright */}
           <p className="text-center sm:text-left">
             © 2024 <a href="/" className="text-white space-x-2 font-bold text-xl">
-              <span>KOS</span><span className="text-[#15803D]">Gaming</span>
+              <span>bet</span><span className="text-[#15803D]">kos</span>
             </a> .Tous droits réservés.
           </p>
 

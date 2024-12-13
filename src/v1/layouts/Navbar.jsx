@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Search, User } from "lucide-react";
 import SidebarMenu from "../components/sub-components/SidebarMenu";
-
 const Navbar = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false); // Barre de recherche
   const [activeMenu, setActiveMenu] = useState(null); // Menu actif
@@ -43,8 +42,8 @@ const Navbar = () => {
             </svg>
           </button>
 
-          <a href="/" className="text-white space-x-2 font-bold text-xl">
-            <span>KOS</span><span className="text-[#15803D]">Gaming</span>
+          <a href="/" className="text-white font-bold text-xl">
+            <span>bet</span><span className="text-[#15803D]">kos</span>
           </a>
         </div>
 
@@ -71,6 +70,9 @@ const Navbar = () => {
 
           {/* Liens */}
           <nav className="flex items-center space-x-4">
+          <a href="/games/games-page" className=" text-[#15803D] bg-white text-sm font-semibold px-4 py-2 rounded-md ">
+              GAMES
+            </a>
             <a href="/auth/login" className="bg-[#15803D] text-white text-sm font-semibold px-4 py-2 rounded-md hover:bg-green-600">
               SE CONNECTER
             </a>

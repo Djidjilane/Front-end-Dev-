@@ -4,7 +4,29 @@ module.exports = {
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      animation: {
+        marquee: 'marquee 33s linear infinite',
+        fadeIn: 'fadeIn 1s ease-out' 
+      },
+      keyframes: {
+        marquee: {
+          '0%': {
+            transform: 'translateX(100%)', // Commence à droite
+          },
+          '100%': {
+            transform: 'translateX(-100%)', // Termine à gauche
+          },
+        },
+        fadeIn: {
+          '0%': { opacity: 0 },
+          '100%': { opacity: 1 },
+        },
+      },
+      fontFamily: {
+        'rubik': ['Rubik', 'sans-serif'], 
+      },
+    },
   },
   plugins: [],
 }

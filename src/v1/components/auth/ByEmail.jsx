@@ -13,7 +13,7 @@ const cityOptions = [
     { label: "Londres", countryCode: "GB" },
 ];
 
-const BySocialNetwork = () => {
+const ByEmail = () => {
     const [country, setCountry] = useState({ value: "BJ", label: "Bénin" });
     const [promoCode, setPromoCode] = useState("");
     const [city, setCity] = useState(null);
@@ -396,4 +396,4 @@ const BySocialNetwork = () => {
     );
 };
 
-export default BySocialNetwork;
+export default ByEmail;
