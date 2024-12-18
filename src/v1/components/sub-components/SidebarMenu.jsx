@@ -43,7 +43,7 @@ const SidebarMenu = ({ isOpen, toggleMenu, activeMenu, handleMenuClick }) => {
       )}
 
       <div
-        className={`fixed lg:absolute lg:top-0 top-0 lg:left-0 left:0 lg:w-1/5 w-full h-[100vh] bg-white text-black z-50 navbar-menu scrollbar-thin scrollbar-thumb-[#15803D] scrollbar-track-[#f1f1f1] p-4 overflow-y-auto border border-gray-300 rounded-md ${isOpen ? "block" : "hidden"}`}
+        className={`fixed lg:absolute lg:top-0 top-0 lg:left-0 left:0 lg:w-1/4 w-full h-[100vh] bg-white text-black z-50 navbar-menu scrollbar-thin scrollbar-thumb-[#15803D] scrollbar-track-[#f1f1f1] p-4 overflow-y-auto border border-gray-300 rounded-md ${isOpen ? "block" : "hidden"}`}
       >
         <div className="h-full">
           {/* Barre de recherche avec bouton de fermeture */}

@@ -10,6 +10,12 @@ import OptionAuthPage from "./v1/pages/auth/option-auth";
 import PhoneVerificationPage from "./v1/pages/auth/phone-verification";
 import OptionForgetPasswordPage from "./v1/pages/auth/option-forget-password";
 import GamesPage from "./v1/pages/games/games-page";
+import HomePage from './v1/dashboard/admin/pages/home/index';
+import UsersPage from './v1/dashboard/admin/pages/users/index';
+import CountryManagementPage from './v1/dashboard/admin/pages/country-management/index';
+import CurrenciesManagementPage from './v1/dashboard/admin/pages/currencies-management/index';
+
+
 
 
 const App = () => {
@@ -17,11 +23,16 @@ const App = () => {
     <Router>
       <Routes>
         <Route path="/" element={<Welcome />} />
+        <Route path="/dashboard/admin/home" element={<HomePage />} />
+        <Route path="/dashboard/admin/users" element={<UsersPage />} />
+        <Route path="/dashboard/admin/countries" element={<CountryManagementPage />} />
+        <Route path="/dashboard/admin/currencies" element={<CurrenciesManagementPage />} />
         <Route path="/auth/login" element={<LoginPage />} />
         <Route path="/auth/register" element={<LoginPage />} />
         <Route path="/auth/option-auth" element={<OptionAuthPage />} />
         <Route path="/auth/phone-verification" element={<PhoneVerificationPage />} />
         <Route path="/auth/option-forget-password" element={<OptionForgetPasswordPage />} />
+        <Route path="/games/games-page" element={<GamesPage />} />
         <Route path="/games/games-page" element={<GamesPage />} />
         {/* <Route path="/auth/forgot-email" element={<LoginPage />} />
       <Route path="/auth/confirm-code" element={<LoginPage />} />

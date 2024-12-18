@@ -9,10 +9,10 @@ const Games = () => {
   const [games, setGames] = useState([]);
   const [filteredGames, setFilteredGames] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const gamesPerPage = 6;
 
   useEffect(() => {
-    // Simuler la récupération des jeux (remplacer par API réelle)
     const fetchedGames = [
       { id: 1, title: "Jeu de Stratégie 1", description: "Un jeu palpitant...", category: "Stratégie", image: "/images/game1.jpg", link: "#" },
       { id: 2, title: "Jeu de Casino", description: "Les cartes sont entre tes mains...", category: "Casino", image: "/images/game2.jpg", link: "#" },
@@ -31,7 +31,6 @@ const Games = () => {
     setFilteredGames(fetchedGames);
   }, []);
 
-  // Mettre à jour les jeux filtrés en fonction des catégories sélectionnées
   useEffect(() => {
     if (selectedCategories.length === 0) {
       setFilteredGames(games);
@@ -40,15 +39,12 @@ const Games = () => {
     }
   }, [selectedCategories, games]);
 
-  // Pagination : découper la liste des jeux en pages
   const indexOfLastGame = currentPage * gamesPerPage;
   const indexOfFirstGame = indexOfLastGame - gamesPerPage;
   const currentGames = filteredGames.slice(indexOfFirstGame, indexOfLastGame);
 
-  // Changer la page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
-  // Gérer les cases à cocher
   const handleCategoryChange = (category) => {
     setSelectedCategories(prev =>
       prev.includes(category) ? prev.filter(item => item !== category) : [...prev, category]
@@ -56,16 +52,20 @@ const Games = () => {
   };
 
   return (
-    <section className="py-12 bg-gray-50">
+    <section className="lg:py-12 bg-gray-50">
       <div className="max-w-6xl mx-auto">
-        <div className="flex flex-col sm:flex-row gap-6 mb-8">
+        <div className="flex flex-col sm:flex-row gap-6 mb-8 lg:p-0 z-50 p-3">
           {/* Composant de filtrage fixe */}
-          <div className="w-full sm:w-1/4 mb-8 sm:mb-0 shadow-md h-fit bg-white rounded-lg  p-4 sticky top-10">
+          <div className="w-full sm:w-1/4 lg:mb-8 sm:mb-0  shadow-md lg:bg-white h-fit rounded-md lg:p-4 p-4 sticky top-0">
             <div className="flex space-x-2">
-              <ListFilter className="text-[#15803D]" />
-              <h3 className="text-xl font-semibold text-[#15803D] mb-4">Filtrer par catégorie</h3>
+              <ListFilter
+                className="text-[#15803D]"
+                onClick={() => setIsModalOpen(true)} // Ouvre le modal
+              />
+              <h3 className="text-xl font-semibold white text-[#15803D] mb-4">Filtrer par catégorie</h3>
             </div>
-            <div className="space-y-2 bg-white rounded-lg p-4 ">
+            {/* Affichage web */}
+            <div className="space-y-2 bg-white rounded-lg p-4 hidden lg:block">
               {categories.map((category) => (
                 <div key={category} className="flex items-center">
                   <input
@@ -81,12 +81,11 @@ const Games = () => {
               ))}
             </div>
           </div>
-{/* creation de  la  branch kevin  */}
+
           {/* Liste des jeux (scrollable) */}
           <div className="w-full sm:w-3/4 z-10 lg:p-0 p-4" style={{ maxHeight: '130vh' }}>
-            {/* Afficher "Aucun résultat" ou le nombre de résultats */}
             <div>
-              <span className="flex text-sm  z-20 font-semibold bg-gradient-to-r from-[#15803D] to-[#7bcd99] p-3 sticky top-0 justify-end text-white rounded-sm mb-4">
+              <span className="flex text-sm z-20 font-semibold bg-gradient-to-r from-[#15803D] to-[#7bcd99] p-3 sticky top-0 justify-end text-white rounded-sm mb-4">
                 {filteredGames.length > 0 ? `Résultats trouvés : ${filteredGames.length}` : 'Aucun résultat de jeux pour cette catégorie'}
               </span>
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -107,6 +106,40 @@ const Games = () => {
             </div>
           </div>
 
+        </div>
+      </div>
+
+      {/* Modal pour mobile */}
+      <div className={`fixed top-0 left-0 z-30 w-full h-full bg-black bg-opacity-50 ${isModalOpen ? 'block' : 'hidden'}`} onClick={() => setIsModalOpen(false)}>
+        <div
+          className="absolute top-14  w-3/4 left-0  h-fit rounded-md bg-white p-8 transition-transform transform-gpu ease-in-out duration-300"
+          style={{ transform: isModalOpen ? 'translateX(0)' : 'translateX(-100%)' }}
+          onClick={(e) => e.stopPropagation()} // Empêche la fermeture quand on clique à l'intérieur du modal
+        >
+          {/* Crois pour fermer le modal */}
+          <span
+            className="absolute top-2 right-2 text-2xl text-gray-700 cursor-pointer"
+            onClick={() => setIsModalOpen(false)}
+          >
+            ×
+          </span>
+
+          <h3 className="text-xl font-semibold text-[#15803D] mb-4">Filtrer par catégorie</h3>
+          <div className="space-y-2 ">
+            {categories.map((category) => (
+              <div key={category} className="flex items-center">
+                <input
+                  type="checkbox"
+                  id={category}
+                  value={category}
+                  checked={selectedCategories.includes(category)}
+                  onChange={() => handleCategoryChange(category)}
+                  className="h-4 w-4 border-2 border-gray-300 rounded text-[#15803D] focus:ring-[#15803D] accent-[#15803D]"
+                />
+                <label htmlFor={category} className="ml-2 text-xl text-gray-700">{category}</label>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </section>
