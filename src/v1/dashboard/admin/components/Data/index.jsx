@@ -38,7 +38,7 @@ export const sidebarLinks = [
     },
     {
       to: "/plans",
-      label: "Bons Plans & Promotions",
+      label: "Promotions",
       icon: "Gift",
     },
     {

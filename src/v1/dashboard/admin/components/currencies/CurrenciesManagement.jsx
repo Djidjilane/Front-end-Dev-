@@ -1,245 +1,129 @@
-// src/components/countries/CountryManagement.jsx
+import React, { useState, useEffect } from 'react';
+import { TailSpin } from 'react-loader-spinner';
+import { FaPen, FaTrashAlt, FaPlus } from 'react-icons/fa';
+import AddCurrencyModal from './sub-components/AddCurrencyModal';
+import EditCurrencyModal from './sub-components/EditCurrencyModal';
+import DeleteCurrencyModal from './sub-components/DeleteCurrencyModal';
+import { getCurrencies } from '../../../../api/context/api_service_currencies';
 
-import React, { useState } from 'react';
-import { FaPen, FaTrashAlt, FaPlus, FaEye } from 'react-icons/fa';
-import AddCountryModal from '../sub-components/AddCountryModal';
-import EditCountryModal from '../sub-components/EditCountryModal';
-import DeleteCountryModal from '../sub-components/DeleteCountryModal';
-import ShowTown from '../sub-components/ShowTown';
-import AddTownModal from '../sub-components/AddTownModal'; // Import du modal d'ajout de ville
 
-const initialCountries = []; // Liste des pays initialisée vide
 
 const CurrenciesManagement = () => {
-  const [countries, setCountries] = useState(initialCountries);
-  const [isAddCountryModalOpen, setIsAddCountryModalOpen] = useState(false);
-  const [isEditCountryModalOpen, setIsEditCountryModalOpen] = useState(false);
-  const [isDeleteCountryModalOpen, setIsDeleteCountryModalOpen] = useState(false);
-  const [countryToEdit, setCountryToEdit] = useState(null);
-  const [countryToDelete, setCountryToDelete] = useState(null);
-  const [isShowTownModalOpen, setIsShowTownModalOpen] = useState(false);
-  const [selectedCountryId, setSelectedCountryId] = useState(null);
-  const [isAddTownModalOpen, setIsAddTownModalOpen] = useState(false);
-  const [countryIdForAddTown, setCountryIdForAddTown] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  // États pour les devises
+  const [currencies, setCurrencies] = useState([]);
+  const [isLoadingCurrencies, setIsLoadingCurrencies] = useState(true);
+  const [currencyError, setCurrencyError] = useState(null);
 
-  // Ouvrir et fermer les modals de pays
-  const openAddCountryModal = () => setIsAddCountryModalOpen(true);
-  const closeAddCountryModal = () => setIsAddCountryModalOpen(false);
+  // États pour les modals
+  const [isAddCurrencyModalOpen, setIsAddCurrencyModalOpen] = useState(false);
+  const [isEditCurrencyModalOpen, setIsEditCurrencyModalOpen] = useState(false);
+  const [isDeleteCurrencyModalOpen, setIsDeleteCurrencyModalOpen] = useState(false);
+  const [currencyToEdit, setCurrencyToEdit] = useState(null);
+  const [currencyToDelete, setCurrencyToDelete] = useState(null);
 
-  const openEditCountryModal = (country) => {
-    setCountryToEdit(country);
-    setIsEditCountryModalOpen(true);
-  };
-  const closeEditCountryModal = () => {
-    setIsEditCountryModalOpen(false);
-    setCountryToEdit(null);
-  };
+  // Fonction pour récupérer les devises
+  const fetchCurrencies = async () => {
+    setIsLoadingCurrencies(true);
+    setCurrencyError(null);
+    try {
+      const response = await getCurrencies();
 
-  const openDeleteCountryModal = (country) => {
-    setCountryToDelete(country);
-    setIsDeleteCountryModalOpen(true);
-  };
-  const closeDeleteCountryModal = () => {
-    setIsDeleteCountryModalOpen(false);
-    setCountryToDelete(null);
-  };
+      // Vérifier et assigner les données
+      const fetchedCurrencies = Array.isArray(response)
+        ? response
+        : response?.data?.currencies || [];
 
-  // Ouvrir et fermer la modal de visualisation des villes
-  const openShowTownModal = (countryId) => {
-    setSelectedCountryId(countryId);
-    setIsShowTownModalOpen(true);
-  };
-  const closeShowTownModal = () => {
-    setIsShowTownModalOpen(false);
-    setSelectedCountryId(null);
-  };
-
-  // Ouvrir et fermer la modal d'ajout de ville
-  const openAddTownModal = (countryId) => {
-    setCountryIdForAddTown(countryId);
-    setIsAddTownModalOpen(true);
-  };
-  const closeAddTownModal = () => {
-    setIsAddTownModalOpen(false);
-    setCountryIdForAddTown(null);
-  };
-
-  // Gestion des pays
-  const handleAddCountry = (newCountry) => {
-    const newCountryWithId = { ...newCountry, id: Date.now(), towns: [] };
-    setCountries([...countries, newCountryWithId]);
-    closeAddCountryModal();
-    setSuccessMessage(`Le pays ${newCountry.name} a été ajouté avec succès!`);
-    setTimeout(() => setSuccessMessage(""), 3000);
-  };
-
-  const handleEditCountry = (updatedCountry) => {
-    const updatedCountries = countries.map(country =>
-      country.id === updatedCountry.id ? updatedCountry : country
-    );
-    setCountries(updatedCountries);
-    closeEditCountryModal();
-    setSuccessMessage(`Le pays ${updatedCountry.name} a été mis à jour avec succès!`);
-    setTimeout(() => setSuccessMessage(""), 3000);
-  };
-
-  const handleDeleteCountry = () => {
-    if (countryToDelete) {
-      const updatedCountries = countries.filter(country => country.id !== countryToDelete.id);
-      setCountries(updatedCountries);
-      closeDeleteCountryModal();
-      setSuccessDeleteMessage(`Le pays ${countryToDelete.name} a été supprimé avec succès!`);
-      setTimeout(() => setSuccessDeleteMessage(""), 3000);
+      setCurrencies(fetchedCurrencies);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des devises :", error);
+      setCurrencyError("Erreur lors de la récupération des devises.");
+    } finally {
+      setIsLoadingCurrencies(false);
     }
   };
 
-  // Gestion des villes
-  const handleAddTown = (countryId, newTown) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        return { ...country, towns: [...country.towns, newTown] };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
+  useEffect(() => {
+    fetchCurrencies();
+  }, []);
+
+  // Fonctions pour ouvrir/fermer les modals
+  const openAddCurrencyModal = () => setIsAddCurrencyModalOpen(true);
+  const closeAddCurrencyModal = () => setIsAddCurrencyModalOpen(false);
+
+  const openEditCurrencyModal = (currency) => {
+    setCurrencyToEdit(currency);
+    setIsEditCurrencyModalOpen(true);
+  };
+  const closeEditCurrencyModal = () => {
+    setIsEditCurrencyModalOpen(false);
+    setCurrencyToEdit(null);
   };
 
-  const handleEditTown = (countryId, townId, newTownName) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        const updatedTowns = country.towns.map(town =>
-          town.id === townId ? { ...town, name: newTownName } : town
-        );
-        return { ...country, towns: updatedTowns };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
+  const openDeleteCurrencyModal = (currency) => {
+    setCurrencyToDelete(currency);
+    setIsDeleteCurrencyModalOpen(true);
   };
-
-  const handleDeleteTown = (countryId, townId) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        const updatedTowns = country.towns.filter(town => town.id !== townId);
-        return { ...country, towns: updatedTowns };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
+  const closeDeleteCurrencyModal = () => {
+    setIsDeleteCurrencyModalOpen(false);
+    setCurrencyToDelete(null);
   };
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-semibold">Gestion des devis</h2>
+        <h2 className="text-xl font-semibold">Gestion des devises</h2>
         <button
-          onClick={openAddCountryModal}
+          onClick={openAddCurrencyModal}
           className="px-2 py-2 bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white rounded-md"
         >
-          + Ajouter une devis
+          <FaPlus className="inline-block mr-1" /> Ajouter une devise
         </button>
       </div>
 
-      {/* Messages de succès */}
-      {successMessage && (
-        <div className="bg-green-500 text-white py-3 px-6 rounded-lg mb-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <svg
-              className="w-6 h-6 text-white mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span>{successMessage}</span>
-          </div>
-          <button onClick={() => setSuccessMessage("")} className="text-white">
-            &times;
-          </button>
-        </div>
-      )}
-
-      {successDeleteMessage && (
-        <div className="bg-red-400 text-white py-3 px-6 rounded-lg mb-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <svg
-              className="w-6 h-6 text-white mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span>{successDeleteMessage}</span>
-          </div>
-          <button onClick={() => setSuccessDeleteMessage("")} className="text-white">
-            &times;
-          </button>
-        </div>
-      )}
-
-      {/* Vérifier si la liste des pays est vide */}
-      {countries.length === 0 ? (
-        <div className="text-center text-red-400 font-semibold">
-          Aucun pays ajouter pour le moment !
+      {/* Affichage des devises ou messages de chargement */}
+      {isLoadingCurrencies ? (
+        <div className="flex justify-center items-center h-40">
+        <TailSpin
+          height="50"
+          width="50"
+          color="#15803D"
+          ariaLabel="loading"
+        />
+      </div>
+      ) : currencyError ? (
+        <div className="text-center text-red-500">{currencyError}</div>
+      ) : currencies.length === 0 ? (
+        <div className="text-center my-36 text-red-500 font-semibold">
+          Aucune devise ajoutée pour le moment !
         </div>
       ) : (
-        /* Tableau des pays */
         <table className="min-w-full bg-white border border-gray-200 rounded-md">
           <thead className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white">
             <tr>
-              <th className="px-6 py-3 text-left">ID</th>
+              <th className="px-6 py-3 text-left">#</th>
               <th className="px-6 py-3 text-left">Nom</th>
-              <th className="px-6 py-3 text-left">Région</th>
-              <th className="px-6 py-3 text-left">Flag Emoji</th>
-              <th className="px-6 py-3 text-left">Devise</th>
-              <th className="px-6 py-3 text-left">Villes</th>
+              <th className="px-6 py-3 text-left">Code ISO</th>
+              <th className="px-6 py-3 text-left">Symbole</th>
               <th className="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {countries.map(country => (
-              <tr key={country.id} className="border-b hover:bg-gray-100">
-                <td className="px-6 py-4 text-sm text-gray-700">{country.id}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.region}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.flag}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.currency}</td>
+            {currencies.map((currency,index) => (
+              <tr key={currency.iso_code} className="border-b hover:bg-gray-100">
+                <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{currency.name}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{currency.iso_code}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{currency.symbol}</td>
                 <td className="px-6 py-4 text-sm">
-                  {/* Boutons "Voir" et "Ajouter une ville" */}
-                  <div className="flex space-x-2">
-                    <button
-                      onClick={() => openShowTownModal(country.id)}
-                      className="bg-gray-300 hover:bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white p-2 rounded-md"
-                    >
-                      <FaEye />
-                    </button>
-                    <button
-                      onClick={() => openAddTownModal(country.id)}
-                      className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white p-2 rounded-md"
-                    >
-                      <FaPlus />
-                    </button>
-                  </div>
-                </td>
-                <td className="px-6 py-4 text-sm">
-                  {/* Bouton Editer */}
                   <button
-                    onClick={() => openEditCountryModal(country)}
-                    className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white mr-2 p-2 rounded-md"
+                    onClick={() => openEditCurrencyModal(currency)}
+                    className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] rounded-md p-2 text-white mr-2"
                   >
                     <FaPen />
                   </button>
-                  {/* Bouton Supprimer */}
                   <button
-                    onClick={() => openDeleteCountryModal(country)}
-                    className="bg-red-500 text-white p-2 rounded-md"
+                    onClick={() => openDeleteCurrencyModal(currency)}
+                    className="bg-red-600 p-2 text-white rounded-md"
                   >
                     <FaTrashAlt />
                   </button>
@@ -251,44 +135,23 @@ const CurrenciesManagement = () => {
       )}
 
       {/* Modals */}
-      <AddCountryModal
-        isModalOpen={isAddCountryModalOpen}
-        closeModal={closeAddCountryModal}
-        handleAddCountry={handleAddCountry}
+      <AddCurrencyModal
+        isModalOpen={isAddCurrencyModalOpen}
+        closeModal={closeAddCurrencyModal}
+        loadfetchCurrencies={fetchCurrencies}
       />
-
-      <EditCountryModal
-        isModalOpen={isEditCountryModalOpen}
-        closeModal={closeEditCountryModal}
-        countryToEdit={countryToEdit}
-        handleEditCountry={handleEditCountry}
+      <EditCurrencyModal
+        isModalOpen={isEditCurrencyModalOpen}
+        closeModal={closeEditCurrencyModal}
+        currencyToEdit={currencyToEdit}
+        loadfetchCurrencies={fetchCurrencies}
       />
-
-      <DeleteCountryModal
-        isOpen={isDeleteCountryModalOpen}
-        closeModal={closeDeleteCountryModal}
-        handleDelete={handleDeleteCountry}
-        countryName={countryToDelete ? countryToDelete.name : ""}
+      <DeleteCurrencyModal
+        isOpen={isDeleteCurrencyModalOpen}
+        closeModal={closeDeleteCurrencyModal}
+        currency={currencyToDelete}
+        loadfetchCurrencies={fetchCurrencies}
       />
-
-      {isShowTownModalOpen && (
-        <ShowTown
-          countryId={selectedCountryId}
-          towns={countries.find(country => country.id === selectedCountryId)?.towns || []}
-          handleEditTown={handleEditTown}
-          handleDeleteTown={handleDeleteTown}
-          closeModal={closeShowTownModal}
-        />
-      )}
-
-      {isAddTownModalOpen && (
-        <AddTownModal
-          isModalOpen={isAddTownModalOpen}
-          closeModal={closeAddTownModal}
-          countryId={countryIdForAddTown}
-          handleAddTown={handleAddTown}
-        />
-      )}
     </div>
   );
 };

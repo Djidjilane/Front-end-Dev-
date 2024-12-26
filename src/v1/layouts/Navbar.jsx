@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
-import {User } from "lucide-react";
+import { User, Home, Gamepad2, UserCheck } from "lucide-react";
 import SidebarMenu from "../components/sub-components/SidebarMenu";
-
+import { Link } from 'react-router-dom';
 const Navbar = () => {
   // const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [activeMenu, setActiveMenu] = useState(null);
@@ -25,7 +25,7 @@ const Navbar = () => {
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const handleMenuClick = (menu) => setActiveMenu(menu);
 
- 
+
   // Filtrer les suggestions en fonction de la recherche
   const handleSearchChange = (e) => {
     const query = e.target.value;
@@ -41,13 +41,13 @@ const Navbar = () => {
   };
 
 
-    // Fonction pour gérer le clic sur une suggestion
-    const handleSuggestionClick = (suggestion) => {
-      setSearchQuery(suggestion); // Remplir le champ de recherche avec la suggestion
-      setSuggestions([]); // Fermer la liste des suggestions
-      // Ici, vous pouvez aussi lancer la recherche automatiquement (par exemple, en filtrant les résultats)
-      console.log("Recherche lancée pour:", suggestion); // Vous pouvez remplacer cette ligne par la logique de recherche réelle
-    };
+  // Fonction pour gérer le clic sur une suggestion
+  const handleSuggestionClick = (suggestion) => {
+    setSearchQuery(suggestion); // Remplir le champ de recherche avec la suggestion
+    setSuggestions([]); // Fermer la liste des suggestions
+    // Ici, vous pouvez aussi lancer la recherche automatiquement (par exemple, en filtrant les résultats)
+    console.log("Recherche lancée pour:", suggestion); // Vous pouvez remplacer cette ligne par la logique de recherche réelle
+  };
 
   // Fermer le menu au clic à l'extérieur
   useEffect(() => {
@@ -112,8 +112,8 @@ const Navbar = () => {
               </button>
             </div>
 
-          {/* Suggestions */}
-          {searchQuery && suggestions.length > 0 && (
+            {/* Suggestions */}
+            {searchQuery && suggestions.length > 0 && (
               <ul className="absolute left+56 w-56 top-14 mt-2 bg-white border border-slate-200 rounded-md shadow-md">
                 {suggestions.map((suggestion, index) => (
                   <li
@@ -130,7 +130,7 @@ const Navbar = () => {
         </div>
 
         {/* Liens */}
-        <div className="flex items-center space-x-6 relative lg:block hidden">
+         <div className="flex items-center space-x-6 relative lg:block hidden">
           <nav className="flex items-center space-x-4 ">
             <a href="/games/games-page" className="text-[#15803D] bg-white text-sm font-semibold px-4 py-2 rounded-md">
               GAMES
@@ -139,7 +139,7 @@ const Navbar = () => {
               SE CONNECTER
             </a>
             <a
-              href="/dashboard"
+              href="/dashboard/admin/home"
               className="text-white font-semibold text-sm flex items-center space-x-2 hover:text-gray-300"
             >
               <User className="w-6 h-6" />
@@ -148,6 +148,45 @@ const Navbar = () => {
           </nav>
         </div>
       </div>
+
+      {/* Mobile Navbar */}
+      <div className="fixed bottom-0 inset-x-0 z-30 py-3 bg-gray-800 border-t border-gray-200 flex justify-around lg:hidden">
+        <Link to="/" className="inline-flex flex-col items-center space-y-1 text-white">
+          <span className="text-lg"><Home /></span>
+          <span className="text-sm">Accueil</span>
+        </Link>
+        <Link to="/games/games-page" className="inline-flex flex-col items-center space-y-1 text-white">
+          <span className="text-lg"><Gamepad2 /></span>
+          <span className="text-sm">Games</span>
+        </Link>
+        <div className="text-center text-white">
+          {/** Vérifiez si l'utilisateur est authentifié **/}
+          {localStorage.getItem('authToken') ? (
+            <Link to="/profile" className="inline-flex flex-col items-center space-y-1">
+              <span className=" text-lg"><User /></span>
+              <span className="text-sm">Mon Compte</span>
+            </Link>
+          ) : (
+            <Link to="/auth/login" className="inline-flex flex-col items-center space-y-1">
+              <span className=" text-xl"> <UserCheck /></span>
+              <span className="text-sm">Login</span>
+            </Link>
+          )}
+        </div>
+      </div>
+
+      {/* {localStorage.getItem('authToken') ? (
+            <Link to="/profile" className="inline-flex flex-col items-center space-y-1">
+              <span className="block text-lg">👤</span>
+              <span className="text-xs">Mon Compte</span>
+            </Link>
+          ) : (
+            <Link to="/login" className="inline-flex flex-col items-center space-y-1">
+              <span className="block text-lg">🔓</span>
+              <span className="text-xs">Login</span>
+            </Link>
+          )} */}
+
 
       {/* Menu Mobile */}
       <SidebarMenu

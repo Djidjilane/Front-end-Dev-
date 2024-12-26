@@ -16,7 +16,7 @@ const SideBar = () => {
       {/* Sidebar */}
       <div
         className={`fixed inset-0 md:relative bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white transition-all duration-300 z-60 
-      ${isSidebarOpen ? 'w-72' : 'w-20'}`}
+      ${isSidebarOpen ? 'w-64' : 'w-20'}`}
       >
         {/* Sidebar Header avec le bouton de basculement */}
         <div className="flex items-center justify-between p-4">
@@ -69,7 +69,7 @@ const SideBar = () => {
                 Icon = LogOut;
                 break;
               default:
-                Icon = FaUserAlt; // Icône par défaut si l'icône n'est pas trouvée
+                Icon = FaUserAlt; 
                 break;
             }
 

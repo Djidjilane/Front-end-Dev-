@@ -1,11 +1,11 @@
 import axios from "axios";
-import { baseURL, token } from "./config";  
+import { baseURL, token } from "./config";
 
 // Créez une instance Axios
 const apiClient = axios.create({
-    baseURL: baseURL, 
+    baseURL: baseURL,
     headers: {
-        Authorization: `Bearer ${token}`,  
+        Authorization: `Bearer ${token}`,
     },
 });
 
@@ -27,6 +27,11 @@ export const createCountry = async (countryData) => {
         return response.data;
     } catch (error) {
         console.error("Erreur lors de la création du pays:", error);
+        // Affichez les détails de l'erreur dans la console pour comprendre l'origine
+        if (error.response) {
+            console.error("Détails de l'erreur:", error.response.data);
+            console.error("Statut de l'erreur:", error.response.status);
+        }
         throw error;
     }
 };

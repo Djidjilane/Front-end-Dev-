@@ -1,30 +1,59 @@
-// src/components/countries/CountryManagement.jsx
-
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { TailSpin } from 'react-loader-spinner';
+import Swal from 'sweetalert2';
 import { FaPen, FaTrashAlt, FaPlus, FaEye } from 'react-icons/fa';
-import AddCountryModal from '../sub-components/AddCountryModal';
-import EditCountryModal from '../sub-components/EditCountryModal';
-import DeleteCountryModal from '../sub-components/DeleteCountryModal';
-import ShowTown from '../sub-components/ShowTown';
-import AddTownModal from '../sub-components/AddTownModal'; // Import du modal d'ajout de ville
+import AddCountryModal from './sub-components/AddCountryModal';
+import EditCountryModal from './sub-components/EditCountryModal';
+import DeleteCountryModal from './sub-components/DeleteCountryModal';
+import AddTownModal from './sub-components/AddTownModal';
+import ShowTownModal from './sub-components/ShowTownModal';
+import { getCountries, deleteCountry } from '../../../../api/context/api_service_countries';
+const CountryManagement = ({handleEditTown, handleDeleteTown }) => {
+  // États pour les pays
+  const [countries, setCountries] = useState([]);
+  const [isLoadingCountries, setIsLoadingCountries] = useState(true);
+  const [countryError, setCountryError] = useState(null);
 
-const initialCountries = []; // Liste des pays initialisée vide
-
-const CountryManagement = () => {
-  const [countries, setCountries] = useState(initialCountries);
+  // États pour les modals des pays 
   const [isAddCountryModalOpen, setIsAddCountryModalOpen] = useState(false);
   const [isEditCountryModalOpen, setIsEditCountryModalOpen] = useState(false);
   const [isDeleteCountryModalOpen, setIsDeleteCountryModalOpen] = useState(false);
-  const [countryToEdit, setCountryToEdit] = useState(null);
   const [countryToDelete, setCountryToDelete] = useState(null);
-  const [isShowTownModalOpen, setIsShowTownModalOpen] = useState(false);
-  const [selectedCountryId, setSelectedCountryId] = useState(null);
-  const [isAddTownModalOpen, setIsAddTownModalOpen] = useState(false);
-  const [countryIdForAddTown, setCountryIdForAddTown] = useState(null);
-  const [successMessage, setSuccessMessage] = useState("");
-  const [successDeleteMessage, setSuccessDeleteMessage] = useState("");
+  const [countryToEdit, setCountryToEdit] = useState(null);
 
-  // Ouvrir et fermer les modals de pays
+
+  //Etats pour les modals des villes 
+  const [isShowTownModalOpen, setIsShowTownModalOpen] = useState(false);
+  const [isAddTownModalOpen, setIsAddTownModalOpen] = useState(false);
+  const [countryToShowTowns, setCountryToShowTowns] = useState(null);
+  const [countryToAddTown, setCountryToAddTown] = useState(null);
+
+  // Fonction pour récupérer les pays
+  const fetchCountries = async () => {
+    setIsLoadingCountries(true);
+    setCountryError(null);
+    try {
+      const response = await getCountries();
+
+      // Vérifier et assigner les données
+      const fetchedCountries = Array.isArray(response)
+        ? response
+        : response?.data?.countries || [];
+
+      setCountries(fetchedCountries);
+    } catch (error) {
+      console.error("Erreur lors de la récupération des pays :", error);
+      setCountryError("Erreur lors de la récupération des pays.");
+    } finally {
+      setIsLoadingCountries(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
+  // Fonctions pour ouvrir/fermer les modals
   const openAddCountryModal = () => setIsAddCountryModalOpen(true);
   const closeAddCountryModal = () => setIsAddCountryModalOpen(false);
 
@@ -39,180 +68,114 @@ const CountryManagement = () => {
 
   const openDeleteCountryModal = (country) => {
     setCountryToDelete(country);
-    setIsDeleteCountryModalOpen(true);
+    setIsDeleteCountryModalOpen(true);  // Ouverture du modal de suppression
   };
   const closeDeleteCountryModal = () => {
-    setIsDeleteCountryModalOpen(false);
-    setCountryToDelete(null);
+    setIsDeleteCountryModalOpen(false);  // Fermeture du modal de suppression
+    setCountryToDelete(null);  // Réinitialisation du pays à supprimer
   };
 
-  // Ouvrir et fermer la modal de visualisation des villes
+
   const openShowTownModal = (countryId) => {
-    setSelectedCountryId(countryId);
+    setCountryToShowTowns(countryId);
     setIsShowTownModalOpen(true);
   };
   const closeShowTownModal = () => {
     setIsShowTownModalOpen(false);
-    setSelectedCountryId(null);
+    setCountryToShowTowns(null);
   };
 
-  // Ouvrir et fermer la modal d'ajout de ville
   const openAddTownModal = (countryId) => {
-    setCountryIdForAddTown(countryId);
+    setCountryToAddTown(countryId);
     setIsAddTownModalOpen(true);
   };
   const closeAddTownModal = () => {
     setIsAddTownModalOpen(false);
-    setCountryIdForAddTown(null);
+    setCountryToAddTown(null);
   };
 
-  // Gestion des pays
+  // Fonctions pour ajouter et modifier les pays
   const handleAddCountry = (newCountry) => {
-    const newCountryWithId = { ...newCountry, id: Date.now(), towns: [] };
-    setCountries([...countries, newCountryWithId]);
-    closeAddCountryModal();
-    setSuccessMessage(`Le pays ${newCountry.name} a été ajouté avec succès!`);
-    setTimeout(() => setSuccessMessage(""), 3000);
+    setCountries((prevCountries) => [...prevCountries, newCountry]);
   };
 
   const handleEditCountry = (updatedCountry) => {
-    const updatedCountries = countries.map(country =>
-      country.id === updatedCountry.id ? updatedCountry : country
+    setCountries((prevCountries) =>
+      prevCountries.map((country) =>
+        country.id === updatedCountry.id ? updatedCountry : country
+      )
     );
-    setCountries(updatedCountries);
-    closeEditCountryModal();
-    setSuccessMessage(`Le pays ${updatedCountry.name} a été mis à jour avec succès!`);
-    setTimeout(() => setSuccessMessage(""), 3000);
   };
 
-  const handleDeleteCountry = () => {
-    if (countryToDelete) {
-      const updatedCountries = countries.filter(country => country.id !== countryToDelete.id);
-      setCountries(updatedCountries);
-      closeDeleteCountryModal();
-      setSuccessDeleteMessage(`Le pays ${countryToDelete.name} a été supprimé avec succès!`);
-      setTimeout(() => setSuccessDeleteMessage(""), 3000);
+  const handleDeleteCountry = async (countryId) => {
+    try {
+      await deleteCountry(countryId);
+      setCountries(countries.filter((country) => country.id !== countryId)); // Retirer le pays de la liste après suppression
+      closeDeleteCountryModal(); // Fermer la modal
+      Swal.fire({
+        icon: 'success',
+        title: 'Succès',
+        text: 'Le pays a été supprimé avec succès.',
+        confirmButtonColor: '#15803D',
+      });
+    } catch (error) {
+      console.error("Erreur lors de la suppression du pays :", error);
+      Swal.fire({
+        icon: 'error',
+        title: 'Erreur',
+        text: 'Une erreur est survenue lors de la suppression du pays.',
+        confirmButtonColor: '#d33',
+      });
     }
-  };
-
-  // Gestion des villes
-  const handleAddTown = (countryId, newTown) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        return { ...country, towns: [...country.towns, newTown] };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
-  };
-
-  const handleEditTown = (countryId, townId, newTownName) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        const updatedTowns = country.towns.map(town =>
-          town.id === townId ? { ...town, name: newTownName } : town
-        );
-        return { ...country, towns: updatedTowns };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
-  };
-
-  const handleDeleteTown = (countryId, townId) => {
-    const updatedCountries = countries.map(country => {
-      if (country.id === countryId) {
-        const updatedTowns = country.towns.filter(town => town.id !== townId);
-        return { ...country, towns: updatedTowns };
-      }
-      return country;
-    });
-    setCountries(updatedCountries);
   };
 
   return (
     <div className="p-6">
-      {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-xl font-semibold">Gestion des pays</h2>
         <button
           onClick={openAddCountryModal}
           className="px-2 py-2 bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white rounded-md"
         >
-          + Ajouter un pays
+          <FaPlus className="inline-block mr-1" /> Ajouter un pays
         </button>
       </div>
 
-      {/* Messages de succès */}
-      {successMessage && (
-        <div className="bg-green-500 text-white py-3 px-6 rounded-lg mb-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <svg
-              className="w-6 h-6 text-white mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span>{successMessage}</span>
-          </div>
-          <button onClick={() => setSuccessMessage("")} className="text-white">
-            &times;
-          </button>
+      {/* Affichage des pays ou messages de chargement */}
+      {isLoadingCountries ? (
+        <div className="flex justify-center items-center h-40">
+          <TailSpin height="50" width="50" color="#15803D" ariaLabel="loading" />
         </div>
-      )}
-
-      {successDeleteMessage && (
-        <div className="bg-red-400 text-white py-3 px-6 rounded-lg mb-4 flex justify-between items-center">
-          <div className="flex items-center">
-            <svg
-              className="w-6 h-6 text-white mr-2"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-            </svg>
-            <span>{successDeleteMessage}</span>
-          </div>
-          <button onClick={() => setSuccessDeleteMessage("")} className="text-white">
-            &times;
-          </button>
-        </div>
-      )}
-
-      {/* Vérifier si la liste des pays est vide */}
-      {countries.length === 0 ? (
-        <div className="text-center text-red-400 font-semibold">
-          Aucun pays ajouter pour le moment !
+      ) : countryError ? (
+        <div className="text-center text-red-500">{countryError}</div>
+      ) : countries.length === 0 ? (
+        <div className="text-center my-36 text-red-500 font-semibold">
+          Aucun pays ajouté pour le moment !
         </div>
       ) : (
-        /* Tableau des pays */
         <table className="min-w-full bg-white border border-gray-200 rounded-md">
           <thead className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white">
             <tr>
-              <th className="px-6 py-3 text-left">ID</th>
+              <th className="px-6 py-3 text-left">#</th>
               <th className="px-6 py-3 text-left">Nom</th>
-              <th className="px-6 py-3 text-left">Région</th>
-              <th className="px-6 py-3 text-left">Flag Emoji</th>
+              <th className="px-6 py-3 text-left">Code ISO</th>
+              <th className="px-6 py-3 text-left">Drapeau</th>
               <th className="px-6 py-3 text-left">Devise</th>
               <th className="px-6 py-3 text-left">Villes</th>
               <th className="px-6 py-3 text-left">Actions</th>
             </tr>
           </thead>
           <tbody>
-            {countries.map(country => (
+            {countries.map((country, index) => (
               <tr key={country.id} className="border-b hover:bg-gray-100">
-                <td className="px-6 py-4 text-sm text-gray-700">{country.id}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{index + 1}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{country.name}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.region}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">{country.iso_code}</td>
                 <td className="px-6 py-4 text-sm text-gray-700">{country.flag}</td>
-                <td className="px-6 py-4 text-sm text-gray-700">{country.currency}</td>
+                <td className="px-6 py-4 text-sm text-gray-700">
+                  {country.currency ? `${country.currency.name} (${country.currency.symbol})` : 'Non définie'}
+                </td>
                 <td className="px-6 py-4 text-sm">
-                  {/* Boutons "Voir" et "Ajouter une ville" */}
                   <div className="flex space-x-2">
                     <button
                       onClick={() => openShowTownModal(country.id)}
@@ -229,20 +192,21 @@ const CountryManagement = () => {
                   </div>
                 </td>
                 <td className="px-6 py-4 text-sm">
-                  {/* Bouton Editer */}
-                  <button
-                    onClick={() => openEditCountryModal(country)}
-                    className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] text-white mr-2 p-2 rounded-md"
-                  >
-                    <FaPen />
-                  </button>
-                  {/* Bouton Supprimer */}
-                  <button
-                    onClick={() => openDeleteCountryModal(country)}
-                    className="bg-red-500 text-white p-2 rounded-md"
-                  >
-                    <FaTrashAlt />
-                  </button>
+                  <div className="flex space-x-2 mt-2">
+                    <button
+                      onClick={() => openEditCountryModal(country)}
+                      className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] rounded-md p-2 text-white"
+                    >
+                      <FaPen />
+                    </button>
+                    <button
+                      onClick={() => openDeleteCountryModal(country)}
+
+                      className="bg-red-600 p-2 text-white rounded-md"
+                    >
+                      <FaTrashAlt />
+                    </button>
+                  </div>
                 </td>
               </tr>
             ))}
@@ -254,40 +218,38 @@ const CountryManagement = () => {
       <AddCountryModal
         isModalOpen={isAddCountryModalOpen}
         closeModal={closeAddCountryModal}
+        loadFetchCountries={fetchCountries}
         handleAddCountry={handleAddCountry}
       />
-
       <EditCountryModal
         isModalOpen={isEditCountryModalOpen}
         closeModal={closeEditCountryModal}
         countryToEdit={countryToEdit}
+        loadFetchCountries={fetchCountries}
         handleEditCountry={handleEditCountry}
       />
-
       <DeleteCountryModal
         isOpen={isDeleteCountryModalOpen}
         closeModal={closeDeleteCountryModal}
+        country={countryToDelete}
         handleDelete={handleDeleteCountry}
-        countryName={countryToDelete ? countryToDelete.name : ""}
+        loadFetchCountries={fetchCountries}
+      />
+      <AddTownModal
+        isModalOpen={isAddTownModalOpen}
+        closeModal={closeAddTownModal}
+        countryId={countryToAddTown}
+        handleAddTown={() => { }}
       />
 
       {isShowTownModalOpen && (
-        <ShowTown
-          countryId={selectedCountryId}
-          towns={countries.find(country => country.id === selectedCountryId)?.towns || []}
+        <ShowTownModal
+          countryId={countryToShowTowns} 
           handleEditTown={handleEditTown}
           handleDeleteTown={handleDeleteTown}
           closeModal={closeShowTownModal}
         />
-      )}
-
-      {isAddTownModalOpen && (
-        <AddTownModal
-          isModalOpen={isAddTownModalOpen}
-          closeModal={closeAddTownModal}
-          countryId={countryIdForAddTown}
-          handleAddTown={handleAddTown}
-        />
+        
       )}
     </div>
   );

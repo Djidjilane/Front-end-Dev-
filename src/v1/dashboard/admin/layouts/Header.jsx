@@ -16,8 +16,8 @@ const Navbar = () => {
   };
 
   return (
-    <header className="bg-gradient-to-r from-[#15803D] to-[#7bcd99] shadow-md py-4">
-      <div className="container mx-auto px-6 flex justify-between items-center">
+    <header className="bg-gradient-to-r from-[#15803D] to-[#7bcd99]  max-w-7xl  shadow-md py-4">
+      <div className="container  px-6 flex justify-between items-center">
 
         {/* Barre de recherche */}
         <div className="hidden lg:flex items-center relative w-2/3">

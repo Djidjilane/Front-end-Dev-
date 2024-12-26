@@ -33,7 +33,6 @@ const App = () => {
         <Route path="/auth/phone-verification" element={<PhoneVerificationPage />} />
         <Route path="/auth/option-forget-password" element={<OptionForgetPasswordPage />} />
         <Route path="/games/games-page" element={<GamesPage />} />
-        <Route path="/games/games-page" element={<GamesPage />} />
         {/* <Route path="/auth/forgot-email" element={<LoginPage />} />
       <Route path="/auth/confirm-code" element={<LoginPage />} />
       <Route path="/auth/reset-password" element={<LoginPage />} />
