@@ -1,55 +1,42 @@
 import React from "react";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import LoginPage from "./v1/pages/auth/login";
-import Welcome from "./v1/pages/home";
+import Welcome from "./v1/pages/home/index";
 // import PrivateRoute from './v1/routes/private-route';
 // import AdminRoute from './v1/routes/admin-route';
 import NotFound404 from "./v1/pages/error-page/404";
-import OptionAuthPage from "./v1/pages/auth/option-auth";
-import PhoneVerificationPage from "./v1/pages/auth/phone-verification";
-import OptionForgetPasswordPage from "./v1/pages/auth/option-forget-password";
-import GamesPage from "./v1/pages/games/games-page";
-import HomePage from './v1/dashboard/admin/pages/home/index';
-import UsersPage from './v1/dashboard/admin/pages/users/index';
-import CountryManagementPage from './v1/dashboard/admin/pages/country-management/index';
-import CurrenciesManagementPage from './v1/dashboard/admin/pages/currencies-management/index';
-
-
-
-
+import Login1 from "./v1/pages/auth/Login";
+import Register from "./v1/pages/auth/Register";
+import PartenaireDashboard from "./v1/dashboard/user/dashboard_partenaire";
+import EntrepriseDashboard from "./v1/dashboard/user/dashboard_entreprise";
+import ClientDashboard from "./v1/dashboard/user/dashboard_client";
+import OuvrierDashboard from "./v1/dashboard/user/dashboard_ouvrier";
+import StagiaireDashboard from "./v1/dashboard/user/dashboard_stagiare";
+import ListeOffre from "./v1/pages/Jobs/OffresPage";
+import CreateOffreForm from "./v1/pages/Jobs/CreateJobs";
+import OffresEntreprise from "./v1/pages/Jobs/OffresEntreprise";
+import ListeCandidatures from "./v1/pages/ListeCandidature";
+import PostulerPage from "./v1/pages/PostulerPage";
 const App = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Welcome />} />
-        <Route path="/dashboard/admin/home" element={<HomePage />} />
-        <Route path="/dashboard/admin/users" element={<UsersPage />} />
-        <Route path="/dashboard/admin/countries" element={<CountryManagementPage />} />
-        <Route path="/dashboard/admin/currencies" element={<CurrenciesManagementPage />} />
-        <Route path="/auth/login" element={<LoginPage />} />
-        <Route path="/auth/register" element={<LoginPage />} />
-        <Route path="/auth/option-auth" element={<OptionAuthPage />} />
-        <Route path="/auth/phone-verification" element={<PhoneVerificationPage />} />
-        <Route path="/auth/option-forget-password" element={<OptionForgetPasswordPage />} />
-        <Route path="/games/games-page" element={<GamesPage />} />
-        {/* <Route path="/auth/forgot-email" element={<LoginPage />} />
-      <Route path="/auth/confirm-code" element={<LoginPage />} />
-      <Route path="/auth/reset-password" element={<LoginPage />} />
-      <Route path="/auth/verify-email" element={<LoginPage />} /> */}
-
-        {/* <Route element={<PrivateRoute />}>
-     //les Rooutes  privé ici
-      </Route>
-
-      <Route element={<AdminRoute />}>
-      // les  routes admin ici  
-      </Route>
- */}
-        <Route path="*" element={<NotFound404 />} />
+        <Route path="/" element={<Welcome/>} />
+        <Route path="/postuler" element={<PostulerPage/>} />
+        <Route path="/candidature" element={<ListeCandidatures/>} />
+        <Route path="/login" element={<Login1/>} />
+        <Route path="/register" element={<Register/>} />
+        <Route path="/dashboard/entreprise" element={<EntrepriseDashboard/>} />
+        <Route path="/dashboard/stagiaire" element={<StagiaireDashboard/>} />
+        <Route path="/dashboard/client" element={<ClientDashboard/>} />
+        <Route path="/dashboard/ouvrier" element={<OuvrierDashboard/>} />
+        <Route path="/dashboard/partenaire" element={<PartenaireDashboard/>} />
+        <Route path="/offre" element={<ListeOffre/>} />
+        <Route path="/offre/create" element={<CreateOffreForm/>} />
+        <Route path="/offre/entreprise" element={<OffresEntreprise/>} />
+        <Route path="*" element={<NotFound404/>} />
       </Routes>
     </Router>
   );
 };
-
 export default App;

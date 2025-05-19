@@ -2,7 +2,6 @@ import React from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import "../../index";
-import Notification from "./Notification";
 
 
 
@@ -10,11 +9,10 @@ import Notification from "./Notification";
 const LayoutComponent = ({ children }) => (
   <main className="">
     <div className="text-white">
-      <Notification message="🚀 Nouveau jeu disponible! Jouez maintenant et gagnez des récompenses!" />
       {/* Barre de navigation */}
       <Navbar />
       {/* Contenu principal de la page */}
-      <main className="content">{children}</main>
+      <main className="pt-16">{children}</main>
 
       {/* Pied de page */}
       <Footer />

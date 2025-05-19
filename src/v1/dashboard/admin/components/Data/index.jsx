@@ -1,70 +1,71 @@
 // src/v1/dashboard/admin/components/Data/index.jsx
 
-export const sidebarLinks = [
+export const data = [
     {
-      to: "/dashboard/admin/home",
-      label: "Dashboard",
-      icon: "FaHome",
+      to: "/dashboard/admin/home", //ici c'est le chemin de chaque menu spécifique au niveau du dasboard à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "FaHome",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard à modifier
     },
     {
-      to: "/dashboard/admin/countries",
-      label: "Gestion pays",
-      icon: "Flag",
+      to: "/dashboard/admin/countries", //ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "Flag",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/dashboard/admin/currencies",
-      label: "Gestion Devis",
-      icon: "CircleDollarSign",
+      to: "/dashboard/admin/currencies",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "CircleDollarSign",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/dashboard/admin/users",
-      label: "Utilisateurs",
-      icon: "FaUserAlt",
+      to: "/dashboard/admin/users",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "FaUserAlt",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/settings",
-      label: "Jeux",
-      icon: "Gamepad2",
+      to: "/settings",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "Gamepad2",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/notifications",
-      label: "Notifications",
-      icon: "Bell",
+      to: "/notifications",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard à modifier
+      icon: "Bell",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/revenues",
-      label: "Revenus",
-      icon: "FaUserAlt",
+      to: "/revenues",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "FaUserAlt",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/plans",
-      label: "Promotions",
-      icon: "Gift",
+      to: "/plans",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "Gift",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard à modifier
     },
     {
-      to: "/reports",
-      label: "Rapports",
-      icon: "Ratio",
+      to: "/reports",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "Ratio",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/settings",
-      label: "Paramètres",
-      icon: "Settings",
+      to: "/settings",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "Settings",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/logs",
-      label: "Logs & Audits",
-      icon: "ShieldCheck",
+      to: "/logs",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "ShieldCheck",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/assistance",
-      label: "Assistance",
-      icon: "BotMessageSquare",
+      to: "/assistance",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "",//ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "BotMessageSquare",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
     {
-      to: "/logout",
-      label: "Déconnexion",
-      icon: "LogOut",
+      to: "/logout",//ici c'est le chemin de chaque menu spécifique au niveau du dasboard  à modifier
+      label: "", //ici c'est le nom des menus au niveau du dasboard  à modifier
+      icon: "LogOut",//ici c'est l'icon  de chaque menu spécifique au niveau du dasboard  à modifier
     },
   ];
   
+  //NB: si tu sens le besoin d'en ajouter d'autres , fais le  

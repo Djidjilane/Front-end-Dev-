@@ -1,75 +1,78 @@
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect } from "react";
 
-const CarrouselComponent = () => {
-  const [currentIndex, setCurrentIndex] = useState(0);
+const slides = [
+  {
+    id: 1,
+    title: "Bienvenue sur notre plateforme",
+    description: "Découvrez des équipes qualifiées dans le BTP.",
+    image: "/img/carousel-1.jpg",
+  },
+  {
+    id: 2,
+    title: "Trouvez un ouvrier qualifié",
+    description: "Maçons, peintres, électriciens, etc.",
+    image: "/img/carousel-1.jpg",
+  },
+  {
+    id: 3,
+    title: "Travaillez avec des entreprises fiables",
+    description: "Des partenaires de confiance partout au Bénin.",
+    image: "/img/carousel-3.jpg",
+  },
+];
 
-  const images = [
-    "/images/slide-1.jpg",
-    "/images/slide-2.jpg",
-    "/images/slide-3.jpg",
-    "/images/slide-4.jpg",
-  ];
+const CarouselComponent = () => {
+  const [current, setCurrent] = useState(0);
 
-  // Utiliser useCallback pour éviter que nextSlide soit recréée à chaque rendu
-  const nextSlide = useCallback(() => {
-    setCurrentIndex((prevIndex) => (prevIndex + 1) % images.length);
-  }, [images.length]); // Ajout de images.length dans les dépendances
+  const prevSlide = () => {
+    setCurrent(current === 0 ? slides.length - 1 : current - 1);
+  };
 
-  // Utiliser useCallback pour éviter que prevSlide soit recréée à chaque rendu
-  const prevSlide = useCallback(() => {
-    setCurrentIndex(
-      (prevIndex) => (prevIndex - 1 + images.length) % images.length
-    );
-  }, [images.length]); // Ajout de images.length dans les dépendances
+  const nextSlide = () => {
+    setCurrent(current === slides.length - 1 ? 0 : current + 1);
+  };
 
-  // Lancer un changement automatique d'image toutes les 3 secondes
   useEffect(() => {
-    const interval = setInterval(nextSlide, 3000); // 3000 ms = 3 secondes
-
-    // Nettoyage de l'intervalle lors du démontage du composant
-    return () => clearInterval(interval);
-  }, [nextSlide]); // Ajout de nextSlide dans les dépendances
+    const timer = setTimeout(nextSlide, 5000);
+    return () => clearTimeout(timer);
+  }, [current]);
 
   return (
-    <section className="relative w-full h-[60vh]">
-      <div className="relative container mx-auto h-full overflow-hidden shadow-lg">
-        {/* Image du carrousel */}
-        <img
-          src={images[currentIndex]}
-          alt={`Slide ${currentIndex + 1}`}
-          className="w-full h-full object-cover transition-all duration-700"
-        />
-
-        {/* Bouton "Précédent" */}
-        <button
-          onClick={prevSlide}
-          className="absolute left-4 top-1/2 transform -translate-y-1/2 text-black/60 bg-white bg-opacity-50 hover:bg-opacity-75 p-3 rounded-full focus:outline-none"
+<div className="relative w-full h-[400px] overflow-hidden rounded-lg shadow-md">
+        {slides.map((slide, index) => (
+        <div
+          key={slide.id}
+          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
+            index === current ? "opacity-100 z-10" : "opacity-0 z-0"
+          }`}
         >
-          ❮
-        </button>
-
-        {/* Bouton "Suivant" */}
-        <button
-          onClick={nextSlide}
-          className="absolute right-4 top-1/2 transform -translate-y-1/2 text-black/60 bg-white bg-opacity-50 hover:bg-opacity-75 p-3 rounded-full focus:outline-none"
-        >
-          ❯
-        </button>
-
-        {/* Indicateurs de position (petites puces en bas) */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2">
-          {images.map((_, index) => (
-            <span
-              key={index}
-              className={`block w-3 h-3 rounded-full bg-white ${
-                currentIndex === index ? "bg-opacity-75" : "bg-opacity-50"
-              }`}
-            ></span>
-          ))}
+          <img
+            src={slide.image}
+            alt={slide.title}
+            className="w-full h-full object-cover"
+          />
+          <div className="absolute inset-0 bg-black/40 flex flex-col justify-center items-center text-white text-center px-4">
+            <h2 className="text-3xl md:text-4xl font-bold mb-2">{slide.title}</h2>
+            <p className="text-md md:text-lg">{slide.description}</p>
+          </div>
         </div>
-      </div>
-    </section>
+      ))}
+
+      {/* Navigation */}
+      <button
+        onClick={prevSlide}
+        className="absolute left-4 top-1/2 -translate-y-1/2 bg-white/50 text-black rounded-full p-2 hover:bg-white"
+      >
+        &#10094;
+      </button>
+      <button
+        onClick={nextSlide}
+        className="absolute right-4 top-1/2 -translate-y-1/2 bg-white/50 text-black rounded-full p-2 hover:bg-white"
+      >
+        &#10095;
+      </button>
+    </div>
   );
 };
 
-export default CarrouselComponent;
+export default CarouselComponent;
