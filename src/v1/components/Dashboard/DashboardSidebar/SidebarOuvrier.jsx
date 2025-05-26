@@ -15,11 +15,10 @@ const SidebarOuvrier = () => {
   const toggleSidebar = () => setIsOpen(!isOpen);
 
   const links = [
-    { label: 'Profil', icon: UserIcon },
-    { label: 'Projet', icon: ClipboardDocumentIcon },
-    { label: 'Entreprise', icon: BriefcaseIcon },
-    { label: 'Equipes de projet', icon: UsersIcon },
-    { label: 'Projets', icon: ClipboardDocumentIcon },
+    { label: 'Profil', icon: UserIcon, path:'/dashboard/ouvrier' },
+    { label: 'Projet', icon: ClipboardDocumentIcon, path:'/projet/liste' },
+    { label: 'Entreprise', icon: BriefcaseIcon, path:'/entrprise' },
+    { label: 'Equipes de projet', icon: UsersIcon, path:'/' },
     { label: 'Settings', icon: Cog6ToothIcon }
   ];
 

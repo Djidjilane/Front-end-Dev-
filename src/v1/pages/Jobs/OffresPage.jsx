@@ -1,33 +1,20 @@
+import { useEffect, useState } from "react";
+import axios from "axios";
+
 export default function ListeOffres() {
-  const offres = [
-    {
-      id: 1,
-      titre: "Développeur Full Stack",
-      entreprise: "TechBénin",
-      description: "Nous recherchons un développeur full stack expérimenté pour rejoindre notre équipe dynamique...",
-      lieu: "Cotonou",
-      date_limite: "2025-06-30",
-      type_contrat: "CDI",
-    },
-    {
-      id: 2,
-      titre: "Assistant RH",
-      entreprise: "Groupe SIBA",
-      description: "Le Groupe SIBA recrute un assistant ressources humaines pour ses activités régionales...",
-      lieu: "Parakou",
-      date_limite: "2025-06-15",
-      type_contrat: "CDD",
-    },
-    {
-      id: 3,
-      titre: "Stagiaire en Marketing Digital",
-      entreprise: "DigitalPro",
-      description: "Une entreprise innovante dans le marketing digital recrute un stagiaire pour une durée de 3 mois...",
-      lieu: "Abomey-Calavi",
-      date_limite: "2025-06-10",
-      type_contrat: "Stage",
-    },
-  ];
+  const [offres, setOffres] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    axios.get("/api/offres")
+      .then(res => setOffres(res.data))
+      .catch(err => console.error("Erreur de chargement des offres :", err))
+      .finally(() => setLoading(false));
+  }, []);
+
+  if (loading) {
+    return <div className="p-6 text-gray-700">Chargement des offres...</div>;
+  }
 
   return (
     <div className="max-w-5xl mx-auto p-6 mt-10">
@@ -40,8 +27,12 @@ export default function ListeOffres() {
               <h2 className="text-xl font-semibold text-gray-800">{offre.titre}</h2>
               <span className="text-sm px-3 py-1 bg-blue-100 text-blue-700 rounded-full">{offre.type_contrat}</span>
             </div>
-            <p className="text-sm text-gray-600 mb-2">Entreprise : <strong>{offre.entreprise}</strong></p>
-            <p className="text-gray-700 mb-3">{offre.description.slice(0, 150)}...</p>
+            <p className="text-sm text-gray-600 mb-2">
+              Entreprise : <strong>{offre.entreprise}</strong>
+            </p>
+            <p className="text-gray-700 mb-3">
+              {offre.description.slice(0, 150)}...
+            </p>
 
             <div className="flex justify-between items-center text-sm text-gray-500">
               <span>📍 {offre.lieu}</span>
