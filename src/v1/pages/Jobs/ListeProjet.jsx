@@ -7,13 +7,13 @@ export default function ListeProjets() {
   const [erreur, setErreur] = useState(null);
 
   useEffect(() => {
-    axios.get("http://192.168.1.20:8000/api/projets")
+    axios.get("http://192.168.1.38:8000/api/projets")
       .then(response => {
         console.log("Réponse reçue:", response.data);
   
         //  Utilise la bonne clé ici
-        if (Array.isArray(response.data.projets)) {
-          setProjets(response.data.projets);
+        if (Array.isArray(response.data.projet)) {
+          setProjets(response.data.projet);
         } else {
           throw new Error("Format de réponse inattendu");
         }

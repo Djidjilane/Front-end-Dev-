@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import axiosInstance from '../../../api/axiosInstance';
 import {
   UserIcon,
   EnvelopeIcon,
@@ -9,48 +11,79 @@ import {
   PhoneIcon
 } from '@heroicons/react/24/outline';
 
+const userTypes = [
+  { value: 'entreprise', label: 'Entrepreneur', icon: <BuildingOfficeIcon className="h-5 w-5" /> },
+  { value: 'ouvrier', label: 'Ouvrier', icon: <UserIcon className="h-5 w-5" /> },
+  { value: 'client', label: 'Client', icon: <LockClosedIcon className="h-5 w-5" /> },
+  { value: 'partenaire', label: 'Partenaire', icon: <IdentificationIcon className="h-5 w-5" /> },
+  { value: 'stagiaire', label: 'Stagiaire', icon: <AcademicCapIcon className="h-5 w-5" /> },
+
+];
+
 const Register = () => {
-  const [form, setForm] = useState({
-    userType: 'client',
-    acceptedTerms: false,
-    lastName: '',
-    firstName: '',
-    email: '',
-    phone: '',
-    password: '',
-    confirmPassword: '',
-  });
+  const [nom, setNom] = useState('');
+  const [prenom, setPrenom] = useState('');
+  const [email, setEmail] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [userType, setUserType] = useState('');
+  const [acceptedTerms, setAcceptedTerms] = useState(false);
+  const [message, setMessage] = useState('');
+  const [erreur, setErreur] = useState('');
   const [isLoading, setIsLoading] = useState(false);
+  const navigate = useNavigate();
 
-  const userTypes = [
-    { value: 'client', label: 'Client', icon: <UserIcon className="h-5 w-5" /> },
-    { value: 'entreprise', label: 'Entreprise', icon: <BuildingOfficeIcon className="h-5 w-5" /> },
-    { value: 'ouvrier', label: 'Ouvrier', icon: <IdentificationIcon className="h-5 w-5" /> },
-    { value: 'partenaire', label: 'Partenaire', icon: <UserIcon className="h-5 w-5" /> },
-    { value: 'stagiaire', label: 'Stagiaire', icon: <AcademicCapIcon className="h-5 w-5" /> },
-  ];
-
-  const handleChange = (e) => {
-    const { name, value, type, checked } = e.target;
-    setForm({ ...form, [name]: type === 'checkbox' ? checked : value });
-  };
-
-  const handleSubmit = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
-    setIsLoading(true);
 
-    // Simulate API call
-    setTimeout(() => {
-      console.log(form);
+    if (password !== confirmPassword) {
+      setErreur("Les mots de passe ne correspondent pas.");
+      return;
+    }
+
+    const userData = {
+      nom,
+      prenom,
+      email,
+      telephone,
+      password,
+      type: userType,
+    };
+
+    try {
+      setIsLoading(true);
+      const response = await fetch('http://127.0.0.1:8000/api/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify(userData),
+      });
+
+      const data = await response.json();
+      if (response.ok) {
+        setMessage(data.message);
+        setErreur('');
+        localStorage.setItem('token', data.token);
+        navigate('/login');
+      } else {
+        setMessage('');
+        setErreur(data.erreur || 'Erreur inconnue');
+      }
+    } catch (error) {
+      setMessage('');
+      setErreur('Erreur réseau ou serveur injoignable');
+    } finally {
       setIsLoading(false);
-    }, 1500);
+    }
   };
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
-      <div className="w-fit max-w-md">
+      <div className="w-full max-w-md">
         <div className="bg-white rounded-xl shadow-2xl overflow-hidden">
-          {/* Header */}
           <div className="bg-blue-400 py-4 px-8 text-center">
             <div className="flex justify-center mb-4">
               <BuildingOfficeIcon className="h-10 w-10 text-white" />
@@ -59,30 +92,31 @@ const Register = () => {
             <p className="text-blue-100 mt-1">Rejoignez-nous dans votre espace professionnel</p>
           </div>
 
-          {/* Form */}
-          <form onSubmit={handleSubmit} className="p-8 space-y-5">
+          <form onSubmit={handleRegister} className="p-8 space-y-5">
+            {/* Erreur / Succès */}
+            {erreur && <p className="text-red-500 text-sm">{erreur}</p>}
+            {message && <p className="text-green-500 text-sm">{message}</p>}
+
             {/* Nom + Prénom */}
             <div className="grid grid-cols-2 gap-4">
               <div>
                 <label className="text-sm text-gray-700">Nom</label>
                 <input
                   type="text"
-                  name="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
+                  value={nom}
+                  onChange={(e) => setNom(e.target.value)}
                   required
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
               <div>
                 <label className="text-sm text-gray-700">Prénom(s)</label>
                 <input
                   type="text"
-                  name="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
+                  value={prenom}
+                  onChange={(e) => setPrenom(e.target.value)}
                   required
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
             </div>
@@ -96,59 +130,55 @@ const Register = () => {
                 </div>
                 <input
                   type="email"
-                  name="email"
-                  value={form.email}
-                  onChange={handleChange}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="pl-10 w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
             </div>
 
             {/* Téléphone */}
             <div>
-  <label className="text-sm text-black-700">Téléphone</label>
-  <div className="relative">
-    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-      <PhoneIcon className="h-5 w-5 text-gray-400" />
-    </div>
-    <input
-      type="tel"
-      name="phone"
-      value={form.phone}
-      onChange={(e) => {
-        const value = e.target.value;
-        if (/^\+?\d{0,15}$/.test(value)) {
-          setForm({ ...form, phone: value });
-        }
-      }}
-      required
-      maxLength={16} // pour limiter la longueur 
-      placeholder="   +229 XXXXXXXX"
-      className="pl-12 w-full px-3 py-2 border border-black-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
-    />
-  </div>
-</div>
+              <label className="text-sm text-gray-700">Téléphone</label>
+              <div className="relative">
+                <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                  <PhoneIcon className="h-5 w-5 text-gray-400" />
+                </div>
+                <input
+                  type="tel"
+                  value={telephone}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\+?\d{0,15}$/.test(value)) setTelephone(value);
+                  }}
+                  required
+                  maxLength={16}
+                  placeholder="+229 XXXXXXXX"
+                  className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md"
+                />
+              </div>
+            </div>
 
-            {/* Type d'utilisateur */}
+            {/* Type utilisateur */}
             <div>
               <label className="text-sm text-gray-700">Vous êtes</label>
               <div className="grid grid-cols-2 gap-3 mt-1">
                 {userTypes.map((type) => (
-                  <div key={type.value} className="relative">
+                  <div key={type.value}>
                     <input
                       type="radio"
                       id={type.value}
                       name="userType"
                       value={type.value}
-                      checked={form.userType === type.value}
-                      onChange={handleChange}
-                      className="absolute opacity-0 h-0 w-0"
+                      checked={userType === type.value}
+                      onChange={(e) => setUserType(e.target.value)}
+                      className="hidden"
                     />
                     <label
                       htmlFor={type.value}
                       className={`flex items-center justify-center p-2 border rounded-md cursor-pointer transition text-sm ${
-                        form.userType === type.value
+                        userType === type.value
                           ? 'border-blue-500 bg-blue-50 text-blue-700'
                           : 'border-gray-300 hover:border-gray-400'
                       }`}
@@ -161,38 +191,26 @@ const Register = () => {
               </div>
             </div>
 
-            {/* Password + Confirm */}
+            {/* Password + Confirmation */}
             <div className="grid grid-cols-2 gap-4">
               <div>
-                <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                  Mot de passe
-                </label>
-                <div className="relative rounded-md shadow-sm">
-                  <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                    <LockClosedIcon className="h-5 w-5 text-gray-400" />
-                  </div>
-                  <input
-                    id="password"
-                    name="password"
-                    type="password"
-                    required
-                    value={form.password}
-                    onChange={handleChange}
-                    className="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-md leading-5 bg-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition"
-                    placeholder="••••••••"
-                  />
-                </div>
+                <label className="text-sm text-gray-700">Mot de passe</label>
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  required
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
+                />
               </div>
-
               <div>
                 <label className="text-sm text-gray-700">Confirmer</label>
                 <input
                   type="password"
-                  name="confirmPassword"
-                  value={form.confirmPassword}
-                  onChange={handleChange}
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
                   required
-                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full mt-1 px-3 py-2 border border-gray-300 rounded-md"
                 />
               </div>
             </div>
@@ -201,15 +219,16 @@ const Register = () => {
             <div className="flex items-start">
               <input
                 type="checkbox"
-                name="acceptedTerms"
-                checked={form.acceptedTerms}
-                onChange={handleChange}
+                checked={acceptedTerms}
+                onChange={(e) => setAcceptedTerms(e.target.checked)}
                 required
-                className="h-4 w-4 text-blue-600 mt-1 focus:ring-blue-500 border-gray-300 rounded"
+                className="h-4 w-4 text-blue-600 mt-1"
               />
               <label className="ml-2 text-sm text-gray-700">
                 J'accepte les{' '}
-                <a href="#" className="text-blue-600 hover:underline">Conditions d'utilisation</a>
+                <Link className="text-blue-600 hover:underline" to="#">
+                  Conditions d'utilisation
+                </Link>
               </label>
             </div>
 
@@ -217,7 +236,7 @@ const Register = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className={`w-full py-3 text-sm font-medium text-white rounded-md bg-blue-600 hover:bg-blue-700 transition focus:outline-none focus:ring-2 focus:ring-blue-500 ${
+              className={`w-full py-3 text-sm font-medium text-white rounded-md bg-blue-600 hover:bg-blue-700 ${
                 isLoading ? 'opacity-75 cursor-not-allowed' : ''
               }`}
             >
@@ -228,9 +247,9 @@ const Register = () => {
           {/* Footer */}
           <div className="bg-gray-50 text-center text-sm text-gray-600 py-4 border-t">
             Déjà inscrit ?{' '}
-            <a href="/login" className="text-blue-600 hover:text-blue-500 font-medium">
+            <Link to="/login" className="text-blue-600 hover:text-blue-500 font-medium">
               Se connecter
-            </a>
+            </Link>
           </div>
         </div>
       </div>

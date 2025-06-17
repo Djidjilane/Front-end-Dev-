@@ -2,13 +2,15 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import axiosInstance from '../../../api/axiosInstance';
 
-export default function FormulaireCandidature() {
+export default function CandidatureStage() {
   const { id: offreId } = useParams();
   const navigate = useNavigate();
 
   const [form, setForm] = useState({
     lettre_motivation: null,
     cv: null,
+    diplome: null,
+    cip: null,
   });
 
   const [message, setMessage] = useState('');
@@ -47,7 +49,9 @@ export default function FormulaireCandidature() {
     const formData = new FormData();
     formData.append('lettre_motivation', form.lettre_motivation);
     formData.append('cv', form.cv);
-   // formData.append('offre_id', offreId);
+    formData.append('cip', form.cv);
+    formData.append('diplome', form.cv);
+    formData.append('offre_id', offreId);
 
     try {
       const token = localStorage.getItem("token");
@@ -111,6 +115,25 @@ export default function FormulaireCandidature() {
 
       <div>
         <label className="block text-sm font-semibold text-gray-700 mb-1">
+          CIP (PDF, JPG, PNG)
+        </label>
+        <input
+          type="file"
+          name="cip"
+          accept=".pdf, .jpg, .png"
+          onChange={handleChange}
+          className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
+                     file:rounded-lg file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-blue-50 file:text-blue-700
+                     hover:file:bg-blue-100"
+          required
+        />
+      </div>
+
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1">
           CV (PDF uniquement)
         </label>
         <input
@@ -126,6 +149,26 @@ export default function FormulaireCandidature() {
           required
         />
       </div>
+
+
+      <div>
+        <label className="block text-sm font-semibold text-gray-700 mb-1">
+          Diplome (s) (PDF uniquement)
+        </label>
+        <input
+          type="file"
+          name="diplome"
+          accept=".pdf"
+          onChange={handleChange}
+          className="w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4
+                     file:rounded-lg file:border-0
+                     file:text-sm file:font-semibold
+                     file:bg-blue-50 file:text-blue-700
+                     hover:file:bg-blue-100"
+          required
+        />
+      </div>
+
 
       <button
         type="submit"

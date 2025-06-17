@@ -1,161 +1,130 @@
-import { useState, useEffect } from "react";
-// InputField.js
-const InputField = ({ label, name, value, onChange, type = "text" }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required
-      className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-);
+import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+import axiosInstance from "../../../api/axiosInstance";
 
-// TextAreaField.js
-const TextAreaField = ({ label, name, value, onChange }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      required
-      rows={4}
-      className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    ></textarea>
-  </div>
-);
-
-
-export default function CreerOffreEmploi() {
+export default function CreateOffreEmploi() {
   const [formData, setFormData] = useState({
-    titre: "",
-    projet_id: "",
+    projet: "",
     description: "",
     lieu: "",
     date_limite: "",
+   
   });
 
-  const [pieces, setPieces] = useState(null);
-  const [projets, setProjets] = useState([]);
-
-  useEffect(() => {
-    fetch("/api/projets")
-      .then(res => res.json())
-      .then(data => setProjets(data))
-      .catch(() => alert("Erreur lors du chargement des projets"));
-  }, []);
+  const [showModal, setShowModal] = useState(false);
+  const navigate = useNavigate();
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-  };
-
-  const handleFileChange = (e) => {
-    setPieces(e.target.files[0]); // un seul fichier pour l’exemple
+    setFormData((prev) => ({
+      ...prev,
+      [name]: value,
+    }));
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   /* // InputField.js
-const InputField = ({ label, name, value, onChange, type = "text" }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required
-      className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    />
-  </div>
-);*/
+    const token = localStorage.getItem("token");
 
-// TextAreaField.js
-/*const TextAreaField = ({ label, name, value, onChange }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">{label}</label>
-    <textarea
-      name={name}
-      value={value}
-      onChange={onChange}
-      required
-      rows={4}
-      className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-    ></textarea>
-  </div>
-);*/
-
-
-    const dataToSend = new FormData();
-    for (const key in formData) {
-      dataToSend.append(key, formData[key]);
+    if (!token) {
+      alert("Vous devez être connecté.");
+      navigate("/login");
+      return;
     }
-    if (pieces) {
-      dataToSend.append("pieces", pieces);
-    }
+    const form = new FormData();
+    form.append("projet", formData.projet);
+    form.append("description", formData.description);
+    form.append("lieu", formData.lieu);
+    form.append("date_limite", formData.date_limite);
+    
 
-    const response = await fetch("/api/creer/offreEmploi", {
-      method: "POST",
-      body: dataToSend
-    });
+    try {
+      const response = await axiosInstance.post("/entreprise/creer/offreEmploi", form, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data"
 
-    if (response.ok) {
-      alert("Offre d'emploi créée avec succès !");
-      setFormData({
-        titre: "",
-        projet_id: "",
-        description: "",
-        lieu: "",
-        date_limite: "",
+        },
       });
-      setPieces(null);
-    } else {
-      alert("Erreur lors de la création de l'offre.");
+
+      console.log("Offre créée avec succès :", response.data);
+      setShowModal(true);
+    } catch (error) {
+      if (error.response) {
+        console.error("Erreur backend :", error.response.data);
+        alert(error.response.data.message || "Erreur lors de la création de l'offre.");
+      } else if (error.request) {
+        console.error("Aucune réponse du serveur :", error.request);
+        alert("Aucune réponse du serveur.");
+      } else {
+        console.error("Erreur : ", error.message);
+        alert("Erreur inattendue : " + error.message);
+      }
     }
   };
 
   return (
-    <div className="max-w-2xl mx-auto mt-10 bg-white p-8 rounded-2xl shadow-lg">
-      <h2 className="text-2xl font-bold text-gray-800 mb-6">Créer une offre d’emploi</h2>
-      <form onSubmit={handleSubmit} className="space-y-6" encType="multipart/form-data">
-        <InputField label="Titre du poste" name="titre" value={formData.titre} onChange={handleChange} />
-
-        <div>
-          <label className="block text-sm font-medium text-gray-700 mb-1">Projet concerné</label>
-          <select
-            name="projet_id"
-            value={formData.projet_id}
-            onChange={handleChange}
-            required
-            className="w-full border border-gray-300 px-4 py-2 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
-          >
-            <option value="">Sélectionner un projet</option>
-            {projets.map((projet) => (
-              <option key={projet.id} value={projet.id}>
-                {projet.nom}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <TextAreaField label="Description" name="description" value={formData.description} onChange={handleChange} />
-
-        
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-          <InputField label="Lieu" name="lieu" value={formData.lieu} onChange={handleChange} />
-          <InputField label="Date limite" name="date_limite" value={formData.date_limite} onChange={handleChange} type="date" />
-        </div>
-
-        <button type="submit" className="w-full py-3 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700 transition duration-200">
-          Publier l’offre
+    <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
+      <h2 className="text-xl font-bold mb-4">Créer une offre d’emploi</h2>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <Input label="Titre du projet" name="projet" value={formData.projet} onChange={handleChange} />
+        <TextArea label="Description" name="description" value={formData.description} onChange={handleChange} />
+        <Input label="Lieu" name="lieu" value={formData.lieu} onChange={handleChange} />
+        <Input label="Date limite de candidature" name="date_limite" type="date" value={formData.date_limite} onChange={handleChange} />
+        <button type="submit" className="w-full py-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700">
+          Enregistrer l’offre
         </button>
       </form>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
+          <div className="bg-white rounded-xl p-6 shadow-lg text-center max-w-sm w-full">
+            <h3 className="text-lg font-semibold text-green-600 mb-2">Offre créée avec succès !</h3>
+            <p className="text-sm text-gray-600 mb-4">Votre offre d’emploi a bien été enregistrée.</p>
+            <button
+              onClick={() => {
+                setShowModal(false);
+                navigate("/entreprise/offres");
+              }}
+              className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded"
+            >
+              OK
+            </button>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Input({ label, name, value, onChange, type = "text" }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <input
+        type={type}
+        name={name}
+        value={value}
+        onChange={onChange}
+        required
+        className="w-full border px-3 py-2 rounded-md"
+      />
+    </div>
+  );
+}
+
+function TextArea({ label, name, value, onChange }) {
+  return (
+    <div>
+      <label className="block text-sm font-medium mb-1">{label}</label>
+      <textarea
+        name={name}
+        value={value}
+        onChange={onChange}
+        required
+        className="w-full border px-3 py-2 rounded-md"
+        rows={4}
+      ></textarea>
     </div>
   );
 }

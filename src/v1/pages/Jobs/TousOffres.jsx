@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
 import { Link } from "react-router-dom";
 
-const OffresStageEntreprise = () => {
+const TousOffre = () => {
   const [offres, setOffres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erreur, setErreur] = useState(null);
@@ -10,7 +10,7 @@ const OffresStageEntreprise = () => {
   useEffect(() => {
     const fetchOffres = async () => {
       try {
-        const response = await axiosInstance.get("/offreStage");
+        const response = await axiosInstance.get("/offreEmploi");
         setOffres(response.data.offre);
       } catch (error) {
         console.error("Erreur lors du chargement des offres :", error);
@@ -28,7 +28,7 @@ const OffresStageEntreprise = () => {
   return (
     <div className="p-6 space-y-6">
       <div className="flex justify-between items-center border-b pb-3">
-        <h2 className="text-2xl font-bold text-gray-800">📄 Offres de stage</h2>
+        <h2 className="text-2xl font-bold text-gray-800">📄 Offres d'emploi</h2>
         {/*<Link
           to="/offres/nouveau"
           className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md shadow-md transition"
@@ -49,10 +49,8 @@ const OffresStageEntreprise = () => {
           {offres.map((offre) => (
             <div key={offre.id} className="flex flex-col md:flex-row justify-between items-start md:items-center border p-4 rounded-lg shadow bg-white">
               <div>
-                <h3 className="text-lg font-semibold text-blue-800">{offre.domaine}</h3>
+                <h3 className="text-lg font-semibold text-blue-800">{offre.titre}</h3>
                 <p className="text-sm text-gray-700 mt-1">{offre.description}</p>
-                <p className="text-sm text-gray-700 mt-1">{offre.niveau}</p>
-
                 <div className="mt-2 text-sm text-gray-600 space-y-1">
                   <p>📍 Lieu : {offre.lieu}</p>
                   <p>📅 Publié le : {new Date(offre.created_at).toLocaleDateString()}</p>
@@ -62,7 +60,7 @@ const OffresStageEntreprise = () => {
 
               <div className="mt-4 md:mt-0 flex gap-3">
                 <Link
-                  to={`/candidature/stage/${offre.id}`}
+                  to={`/formul/${offre.id}`}
                   className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded inline-block"
                 >
                   ✅ Postuler
@@ -76,4 +74,4 @@ const OffresStageEntreprise = () => {
   );
 };
 
-export default OffresStageEntreprise;
+export default TousOffre;
