@@ -7,25 +7,31 @@ export default function ListeProjets() {
   const [erreur, setErreur] = useState(null);
 
   useEffect(() => {
-    axios.get("http://192.168.1.38:8000/api/projets")
-      .then(response => {
-        console.log("Réponse reçue:", response.data);
   
-        //  Utilise la bonne clé ici
-        if (Array.isArray(response.data.projet)) {
-          setProjets(response.data.projet);
-        } else {
-          throw new Error("Format de réponse inattendu");
-        }
   
-        setLoading(false);
-      })
-      .catch(error => {
-        console.error("Erreur de chargement :", error);
-        setErreur("Erreur de chargement : " + error.message);
+    //  Utilise la bonne clé ici
+        axios.get('http://127.0.0.1:8000/api/projets')
+  .then((response) => {
+    const data = response.data.projets; // <-- ici, attention à l’orthographe
+
+    if (Array.isArray(data)) {
+      setProjets(data);
+    } else if (typeof data === 'object' && data !== null) {
+      setProjets([data]);
+    } else {
+      console.error("Réponse inattendue :", response.data);
+      throw new Error("Format de réponse inattendu");
+    }
+  })
+  .catch((error) => {
+    console.error("Erreur de chargement :", error);
+    setErreur("Erreur lors du chargement des projets.");
+  });
+
         setLoading(false);
       });
-  }, []);
+     
+
     
   if (loading) return <p>Chargement...</p>;
   if (erreur) return <p className="text-red-600">{erreur}</p>;

@@ -51,8 +51,10 @@ export default function CandidatureStage() {
     formData.append('cv', form.cv);
     formData.append('cip', form.cv);
     formData.append('diplome', form.cv);
-    formData.append('offre_id', offreId);
+    //formData.append('offre_id', offreId);
 
+
+    
     try {
       const token = localStorage.getItem("token");
 
@@ -68,8 +70,13 @@ export default function CandidatureStage() {
       );
 
       setMessage(response.data.message || '✅ Candidature envoyée avec succès !');
-      setForm({ lettre_motivation: null, cv: null });
-
+      setForm({
+        lettre_motivation: null,
+        cv: null,
+        diplome: null,
+        cip: null,
+      });
+      
     } catch (error) {
       console.error(error);
       if (error.response?.status === 401) {

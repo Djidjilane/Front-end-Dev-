@@ -38,6 +38,9 @@ import ProfilUtilisateur from "./v1/pages/Jobs/UserProfil";
 import ListeProduits from "./v1/pages/Jobs/ListeProduit";
 import DetailProduit from "./v1/pages/Jobs/DetailProduit";
 import AjouterProduit from "./v1/pages/Jobs/AjoutProduits";
+import MesOffresEmploi from "./v1/pages/Jobs/MesOffres";
+import MesOffresStage from "./v1/pages/Jobs/MesOffresEmploi";
+import VoirCandidatures from "./v1/pages/Jobs/Candidature";
 const App = () => {
   return (
     <Router>
@@ -63,6 +66,9 @@ const App = () => {
         <Route path="/projet/liste" element={<ListeProjets/>} />
         <Route path="/projet" element={<CreerProjet/>} />
         <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/entreprise/offreEmploi" element={<MesOffresEmploi />} />
+        <Route path="/entreprise/offreStage" element={<MesOffresStage />} />
+        <Route path="/entreprise/candidatures/:id" element={<VoirCandidatures />} />
 
         <Route path="/candidatur/liste" element={<ListeCandidats/>} />
         <Route path="/dtl" element={<DetailsOffre/>} />
