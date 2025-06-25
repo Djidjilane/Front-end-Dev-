@@ -7,29 +7,29 @@ export default function ListeProjets() {
   const [erreur, setErreur] = useState(null);
 
   useEffect(() => {
-  
-  
-    //  Utilise la bonne clé ici
-        axios.get('http://127.0.0.1:8000/api/projets')
-  .then((response) => {
-    const data = response.data.projets; // <-- ici, attention à l’orthographe
+  axios.get('http://127.0.0.1:8000/api/projets')
+    .then((response) => {
+      const data = response.data.projets;
 
-    if (Array.isArray(data)) {
-      setProjets(data);
-    } else if (typeof data === 'object' && data !== null) {
-      setProjets([data]);
-    } else {
-      console.error("Réponse inattendue :", response.data);
-      throw new Error("Format de réponse inattendu");
-    }
-  })
-  .catch((error) => {
-    console.error("Erreur de chargement :", error);
-    setErreur("Erreur lors du chargement des projets.");
-  });
+      if (Array.isArray(data)) {
+        setProjets(data);
+      } else if (typeof data === 'object' && data !== null) {
+        setProjets([data]);
+      } else {
+        console.error("Réponse inattendue :", response.data);
+        throw new Error("Format de réponse inattendu");
+      }
+    })
+    .catch((error) => {
+      console.error("Erreur de chargement :", error);
+      setErreur("Erreur lors du chargement des projets.");
+    })
+    .finally(() => {
+      setLoading(false); // ✅ on arrête le chargement UNIQUEMENT à la fin
+    });
+}, []);
 
-        setLoading(false);
-      });
+      
      
 
     
@@ -48,31 +48,10 @@ export default function ListeProjets() {
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-700">
             <p><strong>Date début :</strong> {projet.date_debut}</p>
             <p><strong>Date fin :</strong> {projet.date_fin}</p>
-            {/*<p><strong>Budget :</strong> {projet.budget} FCFA</p>
-            <p><strong>État :</strong> {projet.etat}</p>*/}
+            
           </div>
 
-         {/* {projet.pieces?.length > 0 && (
-            <div className="mt-2">
-              <p className="font-medium text-sm">📎 Pièces à fournir :</p>
-              <ul className="list-disc list-inside text-sm text-gray-600">
-                {projet.pieces.map((piece, i) => (
-                  <li key={i}>{piece}</li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {projet.equipe?.length > 0 && (
-            <div className="mt-2">
-              <p className="font-medium text-sm">👥 Équipe :</p>
-              <ul className="list-disc list-inside text-sm text-gray-600">
-                {projet.equipe.map((membre, i) => (
-                  <li key={i}>{membre.nom} ({membre.role})</li>
-                ))}
-              </ul>
-            </div>
-          )}*/}
+         
         </div>
       ))}
     </div>

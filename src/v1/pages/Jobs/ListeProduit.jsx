@@ -18,7 +18,7 @@ import {
   
     useEffect(() => {
       axios
-        .get('http://localhost:8000/api/produits') // 🔁 à adapter selon ton endpoint Laravel
+        .get('http://localhost:8000/api/produits') 
         .then((res) => {
           setProduits(res.data);
           setLoading(false);

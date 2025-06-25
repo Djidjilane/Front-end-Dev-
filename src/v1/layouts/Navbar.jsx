@@ -23,12 +23,12 @@ const Navbar = () => {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center space-x-8">
-          <Link to="#" className="text-blue-600 font-medium">Accueil</Link>
-          <Link to="#" className="text-gray-600 hover:text-blue-600 transition">Recrutement</Link>
+          <Link to="/" className="text-blue-600 font-medium">Accueil</Link>
+          <Link to="/offre/entreprise" className="text-gray-600 hover:text-blue-600 transition">Recrutement</Link>
           <Link to="#" className="text-gray-600 hover:text-blue-600 transition">Matériaux</Link>
-          <Link to="#" className="text-gray-600 hover:text-blue-600 transition">Entreprises</Link>
+          <Link to="/entreprise" className="text-gray-600 hover:text-blue-600 transition">Entreprises</Link>
           <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition">Contact</Link>
-          <button onClick={handleLogout} className="text-sm text-red-600 hover:underline">
+          <button onClick={handleLogout} className="text-md text-red-600 hover:underline">
             Déconnexion
           </button>
         </div>

@@ -31,6 +31,7 @@ import FormulaireCandidature from "./v1/pages/Jobs/FormulaireCandidature";
 import CreerProjet from "./v1/pages/Jobs/CreateProjet";
 import CreerOffreStage from "./v1/pages/Jobs/CreateOffreStage";
 import ListeProjets from "./v1/pages/Jobs/ListeProjet";
+import ChoisirEntreprise from "./v1/pages/Jobs/ChoisirEntreprise";
 import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";
 import ListeEntreprises from "./v1/pages/Jobs/Listeentreprise" 
 import ListePartenaires from "./v1/pages/Jobs/ListePartnaire";
@@ -41,6 +42,12 @@ import AjouterProduit from "./v1/pages/Jobs/AjoutProduits";
 import MesOffresEmploi from "./v1/pages/Jobs/MesOffres";
 import MesOffresStage from "./v1/pages/Jobs/MesOffresEmploi";
 import VoirCandidatures from "./v1/pages/Jobs/Candidature";
+import ListeProjetsClient from "./v1/pages/Jobs/ListeProjetsClient";
+import ProjetsAssignes from "./v1/pages/Jobs/ProjetsAssignes";
+import ProjetsOuverts from "./v1/pages/Jobs/ProjetsOuverts";
+import PostulerProjet from "./v1/pages/Jobs/PostulerProjet";
+import CandidaturesProjets from "./v1/pages/Jobs/CandidaturesProjets";
+import MesCandidaturesProjets from "./v1/pages/Jobs/MesCandidaturesProjets";
 const App = () => {
   return (
     <Router>
@@ -64,7 +71,14 @@ const App = () => {
         <Route path="/offre/stage" element={<OffresStagesEntreprise />} />
         <Route path="/offre/entreprise" element={<TousOffre />} />
         <Route path="/projet/liste" element={<ListeProjets/>} />
-        <Route path="/projet" element={<CreerProjet/>} />
+        <Route path="/client/projet" element={<ListeProjetsClient/>} />
+        <Route path="/assigner/projet/:id" element={<ChoisirEntreprise/>} />
+        <Route path="/projets/assignes" element={<ProjetsAssignes/>} />
+        <Route path="/projets/ouverts" element={<ProjetsOuverts/>} />
+        <Route path="/postuler/projet/:id" element={<PostulerProjet/>} />
+        <Route path="/candidatures/projet/:id" element={<CandidaturesProjets/>} />
+        <Route path="/mesCandidatures/projets" element={<MesCandidaturesProjets/>} />
+        <Route path="/projet/creer" element={<CreerProjet/>} />
         <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
         <Route path="/entreprise/offreEmploi" element={<MesOffresEmploi />} />
         <Route path="/entreprise/offreStage" element={<MesOffresStage />} />

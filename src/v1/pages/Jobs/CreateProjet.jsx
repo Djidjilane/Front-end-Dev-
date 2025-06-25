@@ -85,8 +85,8 @@ export default function CreerProjet() {
   };
 
   return (
-    <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-xl font-bold mb-4">Créer un projet</h2>
+    <div className="max-w-xl mx-auto mt-10 bg-white p-6 rounded-lg shadow-lg">
+      <h2 className="text-xl font-bold mb-4 text-center text-blue-500">Créer un projet</h2>
       <form onSubmit={handleSubmit} className="space-y-4">
         <Input label="Titre du projet" name="titre" value={formData.titre} onChange={handleChange} />
         <TextArea label="Description" name="description" value={formData.description} onChange={handleChange} />
@@ -96,7 +96,7 @@ export default function CreerProjet() {
           <Input label="Date de fin" name="date_fin" type="date" value={formData.date_fin} onChange={handleChange} />
         </div>
         <FileInput label="Fichiers à joindre" name="fichiers" onChange={handleChange} multiple />
-        <button type="submit" className="w-full py-3 rounded bg-blue-600 text-white font-semibold hover:bg-blue-700">
+        <button type="submit" className="w-full py-2 rounded-lg bg-blue-600 text-white font-semibold hover:bg-blue-700">
           Enregistrer
         </button>
       </form>
@@ -125,14 +125,14 @@ export default function CreerProjet() {
 function Input({ label, name, value, onChange, type = "text" }) {
   return (
     <div>
-      <label className="block text-sm font-medium mb-1">{label}</label>
+      <label className="block text-sm  font-semibold mb-1">{label}</label>
       <input
         type={type}
         name={name}
         value={value}
         onChange={onChange}
         required
-        className="w-full border px-3 py-2 rounded-md"
+        className="w-full border-2 px-3 py-2 rounded-md"
       />
     </div>
   );

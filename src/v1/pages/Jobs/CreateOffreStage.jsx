@@ -34,7 +34,7 @@ export default function CreerOffreStage() {
     const token =localStorage.getItem("token");
 
     if (!token) {
-      alert("Vous devez être connecté pour créer un domaine.");
+      alert("Vous devez être connecté pour créer une offre.");
       navigate("/login");
       return;
     }
