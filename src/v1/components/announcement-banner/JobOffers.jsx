@@ -32,7 +32,7 @@ const JobOffers = () => {
             <h2 className="text-3xl font-bold text-gray-800 mb-2">Offres d'emploi</h2>
             <p className="text-gray-600">Les dernières opportunités dans le BTP</p>
           </div>
-          <Link to="/offreEmploi">
+          <Link to="/offre/emploi">
             <button className="mt-4 px-6 w-fit md:mt-0 py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition">
               Voir toutes les offres
             </button>
