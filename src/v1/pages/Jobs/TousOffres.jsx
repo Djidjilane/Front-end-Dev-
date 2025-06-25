@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import axiosInstance from "../../../api/axiosInstance";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const TousOffre = () => {
   const [offres, setOffres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [erreur, setErreur] = useState(null);
+  const navigate = useNavigate();
+
+  const isConnected = !!localStorage.getItem("token");
 
   useEffect(() => {
     const fetchOffres = async () => {
@@ -13,8 +16,8 @@ const TousOffre = () => {
         const response = await axiosInstance.get("/offreEmploi");
         setOffres(response.data.offre);
       } catch (error) {
-        console.error("Erreur lors du chargement des offres :", error);
-        setErreur("❌ Une erreur est survenue lors du chargement des offres.");
+        console.error("Erreur :", error);
+        setErreur("❌ Impossible de charger les offres.");
       } finally {
         setLoading(false);
       }
@@ -23,53 +26,52 @@ const TousOffre = () => {
     fetchOffres();
   }, []);
 
- 
+  const handleClick = (id) => {
+    if (!isConnected) {
+      navigate("/login", { state: { from: `/formul/${id}` } });
+    } else {
+      navigate(`/formul/${id}`);
+    }
+  };
 
   return (
-    <div className="p-6 space-y-6">
-      <div className="flex justify-between items-center border-b pb-3">
-        <h2 className="text-2xl font-bold text-gray-800">📄 Offres d'emploi</h2>
-        {/*<Link
-          to="/offres/nouveau"
-          className="bg-blue-600 hover:bg-blue-700 text-white text-sm px-4 py-2 rounded-md shadow-md transition"
-        >
-          + Nouvelle Offre
-        </Link>*/}
-      </div>
+    <div className="p-5 max-w-4xl mx-auto">
+      <h2 className="text-xl font-semibold text-gray-800 mb-4">📄 Offres d'emploi</h2>
 
-      {loading && <p className="text-gray-600">⏳ Chargement des offres...</p>}
+      {loading && <p className="text-gray-600">Chargement...</p>}
       {erreur && <p className="text-red-500">{erreur}</p>}
 
       {!loading && !erreur && offres.length === 0 && (
-        <p className="text-gray-500">Aucune offre disponible pour le moment.</p>
+        <p className="text-gray-500 italic">Aucune offre pour le moment.</p>
       )}
 
-      {!loading && !erreur && offres.length > 0 && (
-        <div className="space-y-4">
-          {offres.map((offre) => (
-            <div key={offre.id} className="flex flex-col md:flex-row justify-between items-start md:items-center border p-4 rounded-lg shadow bg-white">
-              <div>
-                <h3 className="text-lg font-semibold text-blue-800">{offre.titre}</h3>
-                <p className="text-sm text-gray-700 mt-1">{offre.description}</p>
-                <div className="mt-2 text-sm text-gray-600 space-y-1">
-                  <p>📍 Lieu : {offre.lieu}</p>
-                  <p>📅 Publié le : {new Date(offre.created_at).toLocaleDateString()}</p>
-                  <p>⏳ Date limite : {offre.date_limite}</p>
-                </div>
-              </div>
-
-              <div className="mt-4 md:mt-0 flex gap-3">
-                <Link
-                  to={`/formul/${offre.id}`}
-                  className="bg-green-600 hover:bg-green-700 text-white text-sm px-3 py-1 rounded inline-block"
-                >
-                  ✅ Postuler
-                </Link>
+      <div className="space-y-4">
+        {offres.map((offre) => (
+          <div
+            key={offre.id}
+            className="border border-gray-200 p-4 rounded-md bg-white shadow-sm hover:shadow transition"
+          >
+            <div className="flex flex-col gap-1">
+              <h3 className="text-base font-medium text-blue-700">{offre.titre}</h3>
+              <p className="text-sm text-gray-700">{offre.description}</p>
+              <div className="text-xs text-gray-500">
+                <span>📍 {offre.lieu} | </span>
+                <span>📅 {new Date(offre.created_at).toLocaleDateString()} | </span>
+                <span>⏳ Limite : {offre.date_limite}</span>
               </div>
             </div>
-          ))}
-        </div>
-      )}
+
+            <div className="mt-3">
+              <button
+                onClick={() => handleClick(offre.id)}
+                className="text-sm px-3 py-1 rounded bg-blue-600 hover:bg-blue-700 text-white"
+              >
+                {isConnected ? "Postuler" : "Se connecter pour postuler"}
+              </button>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

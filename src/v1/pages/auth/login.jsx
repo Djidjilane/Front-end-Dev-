@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axiosInstance from '../../../api/axiosInstance';
 import {
@@ -13,19 +13,20 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [errorMsg, setErrorMsg] = useState('');
-  const [showPassword, setShowPassword] = useState(false); // 👁️
+  const [showPassword, setShowPassword] = useState(false);
 
   const navigate = useNavigate();
   const location = useLocation();
-  const from = location.state?.from || '/';
+  const from = useRef(location.state?.from || '/');
 
-  // 🔒 Si déjà connecté, redirige automatiquement vers la page précédente
   useEffect(() => {
     const token = localStorage.getItem('token');
-    if (token) {
-      navigate(from, { replace: true });
+    if (token && from.current !== '/login') {
+      navigate(from.current, { replace: true });
     }
-  }, [navigate, from]);
+  }, [navigate]);
+  
+ 
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -42,29 +43,8 @@ const Login = () => {
 
       localStorage.setItem('token', token);
       localStorage.setItem('user', JSON.stringify(user));
-      navigate(from, { replace: true });
+      navigate(from.current, { replace: true });
 
-
-      /* Redirection intelligente selon le rôle
-      if (user.role === 'ouvrier') {
-        navigate(
-          from.startsWith('/entreprise') || from.startsWith('/admin')
-            ? '/projet'
-            : from,
-          { replace: true }
-        );
-      } else if (user.role === 'entreprise') {
-        navigate(
-          from.startsWith('/ouvrier') || from.startsWith('/admin')
-            ? '/entreprise/dashboard'
-            : from,
-          { replace: true }
-        );
-      } else if (user.role === 'admin') {
-        navigate('/admin', { replace: true });
-      } else {
-        navigate('/', { replace: true });
-      }*/
     } catch (error) {
       console.error(error);
       setErrorMsg(error.response?.data?.message || 'Une erreur est survenue.');
@@ -90,7 +70,6 @@ const Login = () => {
               <div className="text-red-600 text-sm text-center">{errorMsg}</div>
             )}
 
-            {/* Email */}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Adresse Email
@@ -112,7 +91,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Mot de passe */}
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
                 Mot de passe
@@ -149,7 +127,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Remember me & forgot password */}
             <div className="flex items-center justify-between">
               <div className="flex items-center">
                 <input
@@ -171,7 +148,6 @@ const Login = () => {
               </div>
             </div>
 
-            {/* Submit */}
             <div>
               <button
                 type="submit"

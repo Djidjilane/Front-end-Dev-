@@ -44,6 +44,7 @@ import VoirCandidatures from "./v1/pages/Jobs/Candidature";
 import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
 import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
 import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
+import RequireAuth from "./v1/pages/auth/RequireAuth";
 const App = () => {
   return (
     <Router>
@@ -53,6 +54,16 @@ const App = () => {
         {/* autres routes privées ici */}
       </Route>
               {/* connexion */}
+
+              <Route
+          path="/candidature/emploi/"
+          element={
+            <RequireAuth>
+                <MesCandidaturesOuvrier/> 
+
+            </RequireAuth>
+          }
+        />
         <Route path="/login" element={<Login/>} />
         <Route path="/register" element={<Register/>} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
