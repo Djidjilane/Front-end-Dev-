@@ -31,7 +31,7 @@ import FormulaireCandidature from "./v1/pages/Jobs/FormulaireCandidature";
 import CreerProjet from "./v1/pages/Jobs/CreateProjet";
 import CreerOffreStage from "./v1/pages/Jobs/CreateOffreStage";
 import ListeProjets from "./v1/pages/Jobs/ListeProjet";
-import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";
+import ListeCandidats from "./v1/pages/Jobs/CandidatureStages";
 import ListeEntreprises from "./v1/pages/Jobs/Listeentreprise" 
 import ListePartenaires from "./v1/pages/Jobs/ListePartnaire";
 import ProfilUtilisateur from "./v1/pages/Jobs/UserProfil";
@@ -39,51 +39,67 @@ import ListeProduits from "./v1/pages/Jobs/ListeProduit";
 import DetailProduit from "./v1/pages/Jobs/DetailProduit";
 import AjouterProduit from "./v1/pages/Jobs/AjoutProduits";
 import MesOffresEmploi from "./v1/pages/Jobs/MesOffres";
-import MesOffresStage from "./v1/pages/Jobs/MesOffresEmploi";
+import MesOffresStage from "./v1/pages/Jobs/MesOffresStage";
 import VoirCandidatures from "./v1/pages/Jobs/Candidature";
+import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
+import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
+import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
 const App = () => {
   return (
     <Router>
       <Routes>
         <Route element={<ProtectedRoute />}>
-        <Route path="/ouvrier/dashboard" element={<OuvrierDashboard />} />
         <Route path="/formul/:id" element={<FormulaireCandidature />} />
         {/* autres routes privées ici */}
       </Route>
+              {/* connexion */}
+        <Route path="/login" element={<Login/>} />
+        <Route path="/register" element={<Register/>} />
         <Route path="/forgotPassword" element={<ForgotPassword />} />
         <Route path="/verifyCode" element={<VerifyCode />} />
         <Route path="/ResetPassword" element={<ResetPassword />} />
         <Route path="/PasswordResetFlow" element={<PasswordResetFlow />} />
-        <Route path="/contact" element={<ContactForm />} />
-        <Route path="/produits/créer" element={<AjouterProduit />} />
-        <Route path="/partenaires" element={<ListePartenaires />} />
-        <Route path="/produits" element={<ListeProduits />} />
-        <Route path="/produits/:id" element={<DetailProduit />} />
-        <Route path="/profil" element={<ProfilUtilisateur />} />
+                      {/* pas besoin de se connecter*/}
+        <Route path="/" element={<Welcome/>} />
+        <Route path="/offre/emploi" element={<TousOffre />} />
+        <Route path="/projet/liste" element={<ListeProjets/>} />
         <Route path="/entreprise" element={<ListeEntreprises />} />
         <Route path="/offre/stage" element={<OffresStagesEntreprise />} />
-        <Route path="/offre/entreprise" element={<TousOffre />} />
-        <Route path="/projet/liste" element={<ListeProjets/>} />
-        <Route path="/projet" element={<CreerProjet/>} />
-        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/partenaires" element={<ListePartenaires />} />
+
+                              {/* entreprise */}
+        <Route path="/entreprise/profil" element={<EntrepriseProfilForm />} />
+
         <Route path="/entreprise/offreEmploi" element={<MesOffresEmploi />} />
         <Route path="/entreprise/offreStage" element={<MesOffresStage />} />
         <Route path="/entreprise/candidatures/:id" element={<VoirCandidatures />} />
-
         <Route path="/candidatur/liste" element={<ListeCandidats/>} />
+        <Route path="create/projet" element={<CreerProjet/>} />
+        <Route path="/offre/create/emploi" element={<CreerOffreEmploi/>} />
+        <Route path="/offre/create/stage" element={<CreateOffreForm/>} />
+        <Route path="/offre/creer/stage" element={<CreerOffreStage/>} />
+        <Route path="/entreprise/candidatureStage/:id" element={<VoirCandidaturesStage/>} />
+
+                                      {/* Partenaire */}
+        <Route path="/produits/créer" element={<AjouterProduit />} />
+        <Route path="/produits" element={<ListeProduits />} />
+        <Route path="/produits/:id" element={<DetailProduit />} />
+
+                            {/* Ouvrier stagiaire */}
+        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />
+
         <Route path="/dtl" element={<DetailsOffre/>} />
-        <Route path="/" element={<Welcome/>} />
         <Route path="/postuler" element={<PostulerPage/>} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/register" element={<Register/>} />
+                                      {/* dashboard */}
+
         <Route path="/dashboard/entreprise" element={<EntrepriseDashboard/>} />
         <Route path="/dashboard/stagiaire" element={<StagiaireDashboard/>} />
         <Route path="/dashboard/client" element={<ClientDashboard/>} />
         <Route path="/dashboard/ouvrier" element={<OuvrierDashboard/>} />
         <Route path="/dashboard/partenaire" element={<PartenaireDashboard/>} />
-        <Route path="/offre/create/emploi" element={<CreerOffreEmploi/>} />
-        <Route path="/offre/create/stage" element={<CreateOffreForm/>} />
-        <Route path="/offre/creer/stage" element={<CreerOffreStage/>} />
+        <Route path="/profil" element={<ProfilUtilisateur />} />
 
         <Route path="*" element={<NotFound404/>} />
       </Routes>

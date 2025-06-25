@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axiosInstance from "../../../api/axiosInstance";
 
-export default function VoirCandidatures() {
+export default function VoirCandidaturesStage() {
   const { id } = useParams();
   const [offre, setOffre] = useState(null);
   const [candidatures, setCandidatures] = useState([]);
@@ -13,7 +13,7 @@ export default function VoirCandidatures() {
   const fetchCandidatures = async () => {
     try {
       const token = localStorage.getItem("token");
-      const response = await axiosInstance.get(`/entreprise/candidatureParOffreEmploi/${id}`, {
+      const response = await axiosInstance.get(`/entreprise/candidatureParOffreStage/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       setOffre(response.data.offre);
@@ -34,7 +34,7 @@ export default function VoirCandidatures() {
     const { idCandidature, action } = modal;
     try {
       const token = localStorage.getItem("token");
-      const url = `/entreprise/candidature_emploi/${action}/${idCandidature}`;
+      const url = `/entreprise/candidature_stage/${action}/${idCandidature}`;
       const response = await axiosInstance.patch(url, {}, {
         headers: { Authorization: `Bearer ${token}` },
       });
@@ -68,7 +68,7 @@ export default function VoirCandidatures() {
               <p><strong>Nom :</strong> {candidat.candidat_nom}</p>
               <p><strong>Prénom :</strong> {candidat.candidat_prenom}</p>
               <p><strong>Date :</strong> {new Date(candidat.date_candidature).toLocaleString()}</p>
-              <p><strong>Statut :</strong> <span className="uppercase">{candidat.statut || "en attente"}</span></p>
+               <p><strong>Statut :</strong> <span className="uppercase">{candidat.statut || "en attente"}</span></p>
 
               <div className="mt-3 space-x-2">
                 <button

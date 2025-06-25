@@ -10,7 +10,7 @@ export default function DetailsOffre() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/offres/${id}`) // adapte l’URL selon ton API
+      .get(`http://127.0.0.1:8000/api/offres/${id}`) // adapte l’URL selon ton API
       .then((response) => {
         setOffre(response.data);
         setLoading(false);
