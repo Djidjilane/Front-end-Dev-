@@ -67,8 +67,20 @@ const Register = () => {
         setMessage(data.message);
         setErreur('');
         localStorage.setItem('token', data.token);
-        navigate('/login');
-      } else {
+        localStorage.setItem('user', JSON.stringify(data.user)); // ← stocker user
+        const role = data.user?.role || userType;
+        if (role === 'entreprise') {
+          navigate('/entreprise/profil');
+        } else if (role === 'partenaire') {
+          navigate('/partenaire/profil');
+        } else if (role === 'ouvrier') {
+          navigate('/ouvrier/profil');
+        } else if (role === 'stagiaire') {
+          navigate('/stagiaire/profil');
+        } else {
+          navigate('/');
+        }
+              } else {
         setMessage('');
         setErreur(data.erreur || 'Erreur inconnue');
       }

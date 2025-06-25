@@ -36,7 +36,7 @@ export default function MesOffresStage() {
   if (erreur) return <p>{erreur}</p>;
 
   const voirCandidatures = (offreId) => {
-    navigate(`/entreprise/candidatures/${offreId}`);
+    navigate(`/entreprise/candidatureStage/${offreId}`);
   };
 
   return (

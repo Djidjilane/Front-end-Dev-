@@ -7,9 +7,7 @@ export default function FormulaireCandidature() {
 
   const [cip, setCip] = useState(null);
   const [cv, setCv] = useState(null);
-  //const [diplome, setDiplome] = useState(null); // ← 🧠 ajoute cette ligne
- // const [loading, setLoading] = useState(false);
-  //const [message, setMessage] = useState("");
+ 
   const { id: offreId } = useParams();
   const navigate = useNavigate();
   
