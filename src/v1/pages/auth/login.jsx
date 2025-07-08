@@ -34,25 +34,52 @@ const Login = () => {
     setErrorMsg('');
 
     try {
-      const response = await axiosInstance.post('/login', {
-        email,
-        password,
-      });
+        const response = await axiosInstance.post('/login', {
+            email,
+            password,
+        });
 
-      const { token, user } = response.data;
+        const { token, user } = response.data;
 
-      localStorage.setItem('token', token);
-      localStorage.setItem('user', JSON.stringify(user));
-      navigate(from.current, { replace: true });
+        // Debug: Affichez l'objet user complet pour vérification
+        console.log("User object from API:", user);
+
+        localStorage.setItem('token', token);
+        localStorage.setItem('user', JSON.stringify(user));
+
+        // Redirection basée sur user.type au lieu de user.role
+        const redirectPaths = {
+            ouvrier: '/dashboard/ouvrier',
+            entreprise: '/dashboard/entreprise',
+            partenaire: '/dashboard/partenaire',
+            stagiaire: '/dashboard/stagiaire',
+            client: '/dashboard/client',
+            chef_equipe: '/dashboard/chef_equipe'
+        };
+
+        // Vérification que user.type existe
+        if (!user.type) {
+            throw new Error("Le type d'utilisateur n'est pas défini");
+        }
+
+        const userType = user.type.toLowerCase();
+        const redirectPath = redirectPaths[userType] || '/';
+
+        console.log("Redirection vers:", redirectPath); // Pour débogage
+        
+        navigate(redirectPath, { replace: true });
 
     } catch (error) {
-      console.error(error);
-      setErrorMsg(error.response?.data?.message || 'Une erreur est survenue.');
+        console.error('Erreur de connexion:', error);
+        setErrorMsg(
+            error.response?.data?.message || 
+            error.message || 
+            'Une erreur est survenue lors de la connexion'
+        );
     } finally {
-      setIsLoading(false);
+        setIsLoading(false);
     }
-  };
-
+};
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 to-gray-100 flex items-center justify-center p-4">
       <div className="w-fit max-w-sm">

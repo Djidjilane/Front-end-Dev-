@@ -9,8 +9,6 @@ import Testimonials from "../../components/announcement-banner/Testimonials";
 import Stats from "../../components/announcement-banner/Stats";
 import CTA from "../../components/announcement-banner/CTA";
 
-
-
 const Welcome = () => {
   return (
     <LayoutComponent>

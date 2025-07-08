@@ -16,7 +16,6 @@ import CreerOffreEmploi from "./v1/pages/Jobs/CreateOffreEmploi";
 import DetailsOffre from "./v1/pages/Jobs/DetailOffre";
 import NotFound404 from "./v1/pages/error-page/404";
 import Login from "./v1/pages/auth/login";
-import TousOffre from "./v1/pages/Jobs/TousOffres";
 import Register from "./v1/pages/auth/register";
 import PartenaireDashboard from "./v1/dashboard/user/dashboard_partenaire";
 import EntrepriseDashboard from "./v1/dashboard/user/dashboard_entreprise";
@@ -52,8 +51,13 @@ import MesCandidaturesProjets from "./v1/pages/Jobs/MesCandidaturesProjets";
 import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
 import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
 import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
+
 import RequireAuth from "./v1/pages/auth/RequireAuth";
 
+
+import TousOffre from "./v1/pages/Jobs/TousOffres";
+import FormulaireCandidatureStage from "./v1/pages/Jobs/CandidatureStage";
+import MesCandidaturesStagiare from "./v1/pages/Jobs/CandidatureStagiaire";
 const App = () => {
   return (
     <Router>
@@ -120,8 +124,10 @@ const App = () => {
         <Route path="/produits/:id" element={<DetailProduit />} />
 
                             {/* Ouvrier stagiaire */}
-        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/candidature/stage/:id" element={<FormulaireCandidatureStage/>} />
         <Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />
+        <Route path="/ouvrier/candidature" element={<MesCandidaturesOuvrier/>}/>
+        <Route path="/stagiaire/candidature" element={<MesCandidaturesStagiare/>}/>
 
         <Route path="/dtl" element={<DetailsOffre/>} />
         <Route path="/postuler" element={<PostulerPage/>} />

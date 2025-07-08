@@ -7,7 +7,7 @@ const JobOffers = () => {
   const [offres, setOffres] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get("/offres/recents")
+    axiosInstance.get("/offreEmploiRecents")
       .then((res) => {
         // Ici res.data est un tableau d'offres
         const data = res.data.map((offre) => ({
