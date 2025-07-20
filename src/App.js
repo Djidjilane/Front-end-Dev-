@@ -1,3 +1,5 @@
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import React from "react";
 import "./index.css";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
@@ -32,8 +34,8 @@ import CreerProjet from "./v1/pages/Jobs/CreateProjet";
 import CreerOffreStage from "./v1/pages/Jobs/CreateOffreStage";
 import ListeProjets from "./v1/pages/Jobs/ListeProjet";
 import ChoisirEntreprise from "./v1/pages/Jobs/ChoisirEntreprise";
-import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";
-import ListecCandidats from "./v1/pages/Jobs/CandidatureStages";
+import ListeCandidats from "./v1/pages/ListeCandidature";
+import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
 import ListeEntreprises from "./v1/pages/Jobs/Listeentreprise" 
 import ListePartenaires from "./v1/pages/Jobs/ListePartnaire";
 import ProfilUtilisateur from "./v1/pages/Jobs/UserProfil";
@@ -49,12 +51,22 @@ import ProjetsOuverts from "./v1/pages/Jobs/ProjetsOuverts";
 import PostulerProjet from "./v1/pages/Jobs/PostulerProjet";
 import CandidaturesProjets from "./v1/pages/Jobs/CandidaturesProjets";
 import MesCandidaturesProjets from "./v1/pages/Jobs/MesCandidaturesProjets";
-import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
 import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
 import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
 import RequireAuth from "./v1/pages/auth/RequireAuth";
+import Taches from "./v1/pages/Jobs/Taches";
+import CreerTacheSousTraitance from "./v1/pages/Jobs/CreateTache";
+import ListeProjetsEntreprise from "./v1/pages/Jobs/ListeProjetsEntreprise";
+import MesTaches from "./v1/pages/Jobs/MesTaches";
+import CandidaterTache from "./v1/pages/Jobs/CandidaterTache";
+import MesCandidaturesTache from "./v1/pages/Jobs/MesCandidaturesTache";
+import CandidaturesTache from "./v1/pages/Jobs/CandidaturesTache";
 
 const App = () => {
+  <>
+  <ToastContainer position="top-right" autoClose={3000} />
+  {/* ... le reste de votre app */}
+</>
   return (
     <Router>
       <Routes>
@@ -85,20 +97,9 @@ const App = () => {
         <Route path="/projet/liste" element={<ListeProjets/>} />
         <Route path="/entreprise" element={<ListeEntreprises />} />
         <Route path="/offre/stage" element={<OffresStagesEntreprise />} />
-
         <Route path="/offre/entreprise" element={<TousOffre />} />
-        <Route path="/projet/liste" element={<ListeProjets/>} />
-        <Route path="/client/projet" element={<ListeProjetsClient/>} />
-        <Route path="/assigner/projet/:id" element={<ChoisirEntreprise/>} />
-        <Route path="/projets/assignes" element={<ProjetsAssignes/>} />
-        <Route path="/projets/ouverts" element={<ProjetsOuverts/>} />
-        <Route path="/postuler/projet/:id" element={<PostulerProjet/>} />
-        <Route path="/candidatures/projet/:id" element={<CandidaturesProjets/>} />
-        <Route path="/mesCandidatures/projets" element={<MesCandidaturesProjets/>} />
-        <Route path="/projet/creer" element={<CreerProjet/>} />
-        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
-        <Route path="/contact" element={<ContactForm />} />
-        <Route path="/partenaires" element={<ListePartenaires />} />
+
+        
 
                               {/* entreprise */}
         <Route path="/entreprise/profil" element={<EntrepriseProfilForm />} />
@@ -113,6 +114,29 @@ const App = () => {
         <Route path="/offre/create/stage" element={<CreateOffreForm/>} />
         <Route path="/offre/creer/stage" element={<CreerOffreStage/>} />
         <Route path="/entreprise/candidatureStage/:id" element={<VoirCandidaturesStage/>} />
+
+                    {/* Projets */}
+        <Route path="/projet/liste" element={<ListeProjets/>} />
+        <Route path="/client/projet" element={<ListeProjetsClient/>} />
+        <Route path="/entreprise/projet" element={<ListeProjetsEntreprise/>} />
+        <Route path="/assigner/projet/:id" element={<ChoisirEntreprise/>} />
+        <Route path="/projets/assignes" element={<ProjetsAssignes/>} />
+        <Route path="/projets/ouverts" element={<ProjetsOuverts/>} />
+        <Route path="/postuler/projet/:id" element={<PostulerProjet/>} />
+        <Route path="/candidatures/projet/:id" element={<CandidaturesProjets/>} />
+        <Route path="/mesCandidatures/projets" element={<MesCandidaturesProjets/>} />
+        <Route path="/projet/creer" element={<CreerProjet/>} />
+        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/contact" element={<ContactForm />} />
+        <Route path="/partenaires" element={<ListePartenaires />} />
+
+        {/* Soustraitance */}
+        <Route path="/taches" element={<Taches />} />
+        <Route path="/creer/tache/:projetId" element={<CreerTacheSousTraitance />} />
+        <Route path="/mesTaches" element={<MesTaches />} />
+        <Route path="/candidater/tache/:tacheId" element={<CandidaterTache />} />
+        <Route path="/mesCandidatures/tache" element={<MesCandidaturesTache />} />
+        <Route path="/tache/:id/candidatures" element={<CandidaturesTache />} />
 
                                       {/* Partenaire */}
         <Route path="/produits/créer" element={<AjouterProduit />} />
