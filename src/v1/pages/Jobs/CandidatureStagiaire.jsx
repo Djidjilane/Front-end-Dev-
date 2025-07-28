@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
 
-export default function MesCandidaturesOuvrier() {
+export default function MesCandidaturesStagiare() {
   const [candidatures, setCandidatures] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,13 +20,13 @@ export default function MesCandidaturesOuvrier() {
       return;
     }
 
-    if (user?.type !== "ouvrier") {
+    if (user?.type !== "stagiaire") {
       setShowRoleErrorModal(true);
       setLoading(false);
       return;
     }
 
-    axios.get('http://localhost:8000/api/ouvrier/mesCandidatures', {
+    axios.get('http://localhost:8000/api/stagiaire/mesCandidatures', {
       headers: { 
         Authorization: `Bearer ${token}`,
         'Accept': 'application/json'
@@ -176,7 +176,7 @@ export default function MesCandidaturesOuvrier() {
               </svg>
               <h3 className="mt-3 text-lg font-medium text-gray-900">Accès restreint</h3>
               <div className="mt-2 text-sm text-gray-500">
-                <p>Cette page est réservée aux ouvriers.</p>
+                <p>Cette page est réservée aux stagiaires.</p>
               </div>
               <div className="mt-5 flex justify-center space-x-3">
                 <button

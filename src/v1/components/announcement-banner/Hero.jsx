@@ -15,7 +15,7 @@ const Hero = () => {
             Une solution complète pour les professionnels du bâtiment.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
-            <Link to="/offre" >
+            <Link to="/offre/emploi" >
               <button className="px-3 w-fit py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition flex items-center justify-center">
                 Trouver un emploi <ArrowRightIcon className="ml-2 h-5 w-5" />
               </button>

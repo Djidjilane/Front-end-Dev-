@@ -18,7 +18,6 @@ import CreerOffreEmploi from "./v1/pages/Jobs/CreateOffreEmploi";
 import DetailsOffre from "./v1/pages/Jobs/DetailOffre";
 import NotFound404 from "./v1/pages/error-page/404";
 import Login from "./v1/pages/auth/login";
-import TousOffre from "./v1/pages/Jobs/TousOffres";
 import Register from "./v1/pages/auth/register";
 import PartenaireDashboard from "./v1/dashboard/user/dashboard_partenaire";
 import EntrepriseDashboard from "./v1/dashboard/user/dashboard_entreprise";
@@ -34,8 +33,9 @@ import CreerProjet from "./v1/pages/Jobs/CreateProjet";
 import CreerOffreStage from "./v1/pages/Jobs/CreateOffreStage";
 import ListeProjets from "./v1/pages/Jobs/ListeProjet";
 import ChoisirEntreprise from "./v1/pages/Jobs/ChoisirEntreprise";
-import ListeCandidats from "./v1/pages/ListeCandidature";
-import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
+/*import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";*/
+import ListecCandidats from "./v1/pages/Jobs/CandidatureStages";
+
 import ListeEntreprises from "./v1/pages/Jobs/Listeentreprise" 
 import ListePartenaires from "./v1/pages/Jobs/ListePartnaire";
 import ProfilUtilisateur from "./v1/pages/Jobs/UserProfil";
@@ -53,7 +53,13 @@ import CandidaturesProjets from "./v1/pages/Jobs/CandidaturesProjets";
 import MesCandidaturesProjets from "./v1/pages/Jobs/MesCandidaturesProjets";
 import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
 import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
+import MesCandidatures from "./v1/pages/Jobs/MesCandidaturesOuvriers";
 import RequireAuth from "./v1/pages/auth/RequireAuth";
+
+import TousOffre from "./v1/pages/Jobs/TousOffres";
+import FormulaireCandidatureStage from "./v1/pages/Jobs/CandidatureStage";
+import MesCandidaturesStagiare from "./v1/pages/Jobs/CandidatureStagiaire";
+
 import Taches from "./v1/pages/Jobs/Taches";
 import CreerTacheSousTraitance from "./v1/pages/Jobs/CreateTache";
 import ListeProjetsEntreprise from "./v1/pages/Jobs/ListeProjetsEntreprise";
@@ -62,6 +68,8 @@ import CandidaterTache from "./v1/pages/Jobs/CandidaterTache";
 import MesCandidaturesTache from "./v1/pages/Jobs/MesCandidaturesTache";
 import CandidaturesTache from "./v1/pages/Jobs/CandidaturesTache";
 
+
+import OuvrierProfilForm from "./v1/pages/auth/Profil/Ouvrier";
 const App = () => {
   <>
   <ToastContainer position="top-right" autoClose={3000} />
@@ -103,12 +111,13 @@ const App = () => {
 
                               {/* entreprise */}
         <Route path="/entreprise/profil" element={<EntrepriseProfilForm />} />
+        <Route path="ouvrier/profil" element={<OuvrierProfilForm />} />
 
 
         <Route path="/entreprise/offreEmploi" element={<MesOffresEmploi />} />
         <Route path="/entreprise/offreStage" element={<MesOffresStage />} />
         <Route path="/entreprise/candidatures/:id" element={<VoirCandidatures />} />
-        <Route path="/candidatur/liste" element={<ListeCandidats/>} />
+        {/*<Route path="/candidatur/liste" element={<ListeCandidats/>} />*/}
         <Route path="create/projet" element={<CreerProjet/>} />
         <Route path="/offre/create/emploi" element={<CreerOffreEmploi/>} />
         <Route path="/offre/create/stage" element={<CreateOffreForm/>} />
@@ -144,8 +153,11 @@ const App = () => {
         <Route path="/produits/:id" element={<DetailProduit />} />
 
                             {/* Ouvrier stagiaire */}
-        <Route path="/candidature/stage/:id" element={<CandidatureStage/>} />
+        <Route path="/candidature/stage/:id" element={<FormulaireCandidatureStage/>} />
         <Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />
+        <Route path="/ouvrier/candidature" element={<MesCandidaturesOuvrier/>}/>
+        <Route path="/stagiaire/candidature" element={<MesCandidaturesStagiare/>}/>
+        <Route path="/candidature" element={<MesCandidatures/>}/>
 
         <Route path="/dtl" element={<DetailsOffre/>} />
         <Route path="/postuler" element={<PostulerPage/>} />

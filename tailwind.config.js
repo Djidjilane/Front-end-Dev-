@@ -30,6 +30,20 @@ module.exports = {
   },
   plugins: [],
 }
+module.exports = {
+  content: ['./src/**/*.{js,jsx,ts,tsx}'],
+  theme: {
+    extend: {},
+  },
+  variants: {
+    extend: {
+      visibility: ['group-hover'],
+      opacity: ['group-hover'],
+    },
+  },
+  plugins: [],
+};
+
 
 
 

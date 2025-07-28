@@ -19,9 +19,8 @@ const SidebarEntreprise = () => {
   const links = [
     { label: 'Profil', icon: UserIcon, path: '/dashboard/entreprise' },
     { label: 'Partenaires Commerciaux', icon: UsersIcon, path: '/partenaires' },
-    { label: 'Offres d\'Emploi', icon: BriefcaseIcon, path: '/offre/entreprise' },
-    { label: 'Offres de Stage', icon: AcademicCapIcon, path: '/offre/stage' },
-    { label: 'Candidatures', icon: ClipboardDocumentIcon, path: '/candidatur/liste' },
+    { label: 'Offres d\'Emploi', icon: BriefcaseIcon, path: '/entreprise/offreEmploi' },
+    { label: 'Offres de Stage', icon: AcademicCapIcon, path: '/entreprise/offreStage' },
     { label: 'Projets', icon: ClipboardDocumentIcon, path: '/projet/liste' },
     { label: 'Settings', icon: Cog6ToothIcon, path: '/parametres' },
   ];
