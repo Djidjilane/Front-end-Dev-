@@ -32,7 +32,7 @@ export default function FormulaireCandidature() {
     }
     
     if (user?.type !== "ouvrier") {
-      navigate("/dashboard");
+      navigate("/login");
       return;
     }
     
@@ -155,7 +155,7 @@ export default function FormulaireCandidature() {
                     <button
                       onClick={() => {
                         setShowModal(false);
-                        navigate("/ouvrier/mes-candidatures");
+                        navigate("/ouvrier/candidature");
                       }}
                       className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition-colors"
                     >

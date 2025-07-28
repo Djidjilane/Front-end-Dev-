@@ -2,73 +2,47 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import SidebarEntreprise from '../../components/Dashboard/DashboardSidebar/SidebarEntreprise';
-
 export default function MesOffresStage() {
-  // États
   const [offres, setOffres] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [userType, setUserType] = useState(null);
-  const [isOnline, setIsOnline] = useState(navigator.onLine);
   const navigate = useNavigate();
-
-  // Détection de la connexion
-  useEffect(() => {
-    const handleStatusChange = () => setIsOnline(navigator.onLine);
-    window.addEventListener('online', handleStatusChange);
-    window.addEventListener('offline', handleStatusChange);
-    return () => {
-      window.removeEventListener('online', handleStatusChange);
-      window.removeEventListener('offline', handleStatusChange);
-    };
-  }, []);
-
-  // Chargement des données
   useEffect(() => {
     const fetchData = async () => {
       try {
         const user = JSON.parse(localStorage.getItem('user'));
         setUserType(user?.type);
 
-        if (user?.type !== 'entreprise') return;
+        if (user?.type === 'entreprise') {
 
-        // Mode hors ligne : utiliser le cache si disponible
-        if (!isOnline) {
-          const cachedData = localStorage.getItem('cachedOffresStage');
-          if (cachedData) {
-            setOffres(JSON.parse(cachedData));
-            setError(null);
-          } else {
-            setError('Aucune donnée en cache. Connectez-vous pour accéder aux données.');
-          }
-          setLoading(false);
-          return;
-        }
-
-        // Mode en ligne : requête API
-        const token = localStorage.getItem('token');
+            const token = localStorage.getItem('token');
         const response = await axios.get('http://127.0.0.1:8000/api/entreprise/mesOffreStage', {
-          headers: { 'Authorization': `Bearer ${token}` }
+          headers: { 
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/json'
+        }
         });
 
         setOffres(response.data.offre || []);
-        localStorage.setItem('cachedOffresStage', JSON.stringify(response.data.offre));
-      } catch (err) {
-        setError(err.response?.data?.message || 'Erreur de chargement');
+      } 
+    }catch (error) {
+        console.error('Erreur:', error);
+        setError(error.response?.data?.message || 'Erreur lors du chargement');
       } finally {
         setLoading(false);
       }
     };
 
     fetchData();
-  }, [isOnline]);
+  }, []);
+   
 
   // Navigation
   const voirCandidatures = (offreId) => navigate(`/entreprise/candidatureStage/${offreId}`);
   const creerOffreStage = () => navigate('/offre/create/stage');
-  const reloadPage = () => window.location.reload();
 
-  // Affichage hors ligne
+  /* Affichage hors ligne
   if (!isOnline && offres.length === 0) {
     return (
       <div className="flex h-screen bg-gray-50">
@@ -93,7 +67,7 @@ export default function MesOffresStage() {
       </div>
     );
   }
-
+*/
   // États de chargement/erreur
   if (loading) {
     return (
@@ -106,24 +80,14 @@ export default function MesOffresStage() {
     );
   }
 
-  if (error) {
-    return (
-      <div className="flex h-screen">
-        <SidebarEntreprise />
-        <div className="flex-1 p-6 flex items-center justify-center">
-          <div className="bg-red-100 border-l-4 border-red-500 p-4 max-w-md">
-            <p className="text-red-700">{error}</p>
-            <button
-              onClick={reloadPage}
-              className="mt-2 px-3 py-1 bg-red-600 text-white rounded text-sm"
-            >
-              Réessayer
-            </button>
-          </div>
-        </div>
+  if (error) return (
+    <div className="flex h-screen">
+      <SidebarEntreprise />
+      <div className="flex-1 p-4 bg-red-100 border-l-4 border-red-500 text-red-700">
+        <p>{error}</p>
       </div>
-    );
-  }
+    </div>
+  );
 
   if (userType !== 'entreprise') {
     return (
@@ -142,23 +106,21 @@ export default function MesOffresStage() {
   return (
     <div className="flex h-screen bg-gray-50">
       <SidebarEntreprise />
-      
       <div className="flex-1 overflow-y-auto p-6">
         <div className="max-w-4xl mx-auto">
-          {/* En-tête avec bouton */}
           <div className="flex justify-between items-center mb-6">
             <h1 className="text-2xl font-bold text-gray-800">Mes Offres de Stage</h1>
             <button
               onClick={creerOffreStage}
-              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition-colors flex items-center"
-              disabled={!isOnline}
+              className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 flex items-center"
             >
               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor">
                 <path fillRule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clipRule="evenodd" />
               </svg>
-              Créer une offre
+              Créer une nouvelle offre
             </button>
           </div>
+
 
           {/* Liste des offres */}
           {offres.length === 0 ? (
@@ -168,13 +130,11 @@ export default function MesOffresStage() {
               </svg>
               <h3 className="mt-2 text-lg font-medium text-gray-900">Aucune offre disponible</h3>
               <p className="mt-1 text-sm text-gray-500">
-                {isOnline ? "Commencez par créer votre première offre." : "Connectez-vous pour créer une offre."}
               </p>
               <button
                 onClick={creerOffreStage}
-                className={`mt-4 px-4 py-2 text-white rounded-md transition-colors ${isOnline ? 'bg-blue-600 hover:bg-blue-700' : 'bg-gray-400 cursor-not-allowed'}`}
-                disabled={!isOnline}
-              >
+                className="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700 transition duration-300 flex items-center"
+                >
                 Créer une offre
               </button>
             </div>
@@ -209,8 +169,8 @@ export default function MesOffresStage() {
                     </div>
                     <button
                       onClick={() => voirCandidatures(offre.id)}
-                      className={`px-3 py-1 rounded-md flex items-center text-sm ${isOnline ? 'bg-blue-600 text-white hover:bg-blue-700' : 'bg-gray-300 text-gray-500 cursor-not-allowed'}`}
-                      disabled={!isOnline}
+                      className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition duration-300 flex items-center"
+
                     >
                       <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
                         <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0119 16v1h-6.07zM6 11a5 5 0 015 5v1H1v-1a5 5 0 015-5z" />
@@ -225,5 +185,6 @@ export default function MesOffresStage() {
         </div>
       </div>
     </div>
-  );
-}
+  
+        );
+  }

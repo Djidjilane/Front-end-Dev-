@@ -1,152 +1,112 @@
-import React, { useState, useCallback, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import React, { useState } from 'react';
+import axiosInstance from '../../../../api/axiosInstance';
 
-const EntrepriseProfilForm = () => {
-  const initialFormData = {
-    secteur: '',
-    description: '',
-    adresse: '',
-    contact: '',
+export default function CompleteEntrepriseProfile() {
+  const [formData, setFormData] = useState({
+    nom_entreprise: '',
     IFU: '',
     RCCM: '',
-    logo: null,
+    logo: null
+  });
+  const token = localStorage.getItem('token');
+
+  const [message, setMessage] = useState('');
+  const [error, setError] = useState('');
+
+  const handleChange = (e) => {
+    if (e.target.name === 'logo') {
+      setFormData({ ...formData, logo: e.target.files[0] });
+    } else {
+      setFormData({ ...formData, [e.target.name]: e.target.value });
+    }
   };
 
-  const [formData, setFormData] = useState(initialFormData);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [status, setStatus] = useState({ success: null, error: null });
-  const [logoPreview, setLogoPreview] = useState(null);
-  const navigate = useNavigate();
-
-  // Vérification de l'authentification
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setStatus({ error: "Veuillez vous connecter", success: null });
-      navigate('/login');
-    }
-  }, [navigate]);
-
-  // Gestion des changements
-  const handleChange = useCallback((e) => {
-    const { name, value, files } = e.target;
-    
-    setFormData(prev => ({
-      ...prev,
-      [name]: files ? files[0] : value
-    }));
-
-    if (files && name === 'logo') {
-      const preview = URL.createObjectURL(files[0]);
-      setLogoPreview(prev => {
-        if (prev) URL.revokeObjectURL(prev);
-        return preview;
-      });
-    }
-  }, []);
-
-  // Validation du formulaire
-  const validateForm = () => {
-    const requiredFields = ['secteur', 'description', 'adresse', 'contact', 'IFU', 'logo'];
-    const missingFields = requiredFields.filter(field => !formData[field]);
-
-    if (missingFields.length > 0) {
-      setStatus({
-        error: `Les champs suivants sont requis: ${missingFields.join(', ')}`,
-        success: null
-      });
-      return false;
-    }
-
-    if (!/^(\+)?[\d\s-]{8,}$/.test(formData.contact)) {
-      setStatus({
-        error: 'Le format du contact est invalide',
-        success: null
-      });
-      return false;
-    }
-
-    return true;
-  };
-
-  // Soumission du formulaire
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
-    if (!validateForm()) return;
+    setError('');
+    setMessage('');
 
-    setIsSubmitting(true);
-    setStatus({ error: null, success: null });
-
-    const token = localStorage.getItem("token");
-    if (!token) {
-      setStatus({ error: "Session expirée", success: null });
-      navigate('/login');
-      return;
-    }
-
-    const formDataToSend = new FormData();
-    Object.entries(formData).forEach(([key, value]) => {
-      if (value) formDataToSend.append(key, value);
-    });
+    const data = new FormData();
+    data.append('nom_entreprise', formData.nom_entreprise);
+    data.append('IFU', formData.IFU);
+    data.append('RCCM', formData.RCCM);
+    if (formData.logo) data.append('logo', formData.logo);
 
     try {
-      const { data } = await axios.post(
-        'http://localhost:8000/api/entreprise/completer',
-        formDataToSend,
-        {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${token}`,
-            'Accept': 'application/json'
-          },
-          withCredentials: true
-        }
-      );
+      const response = await axiosInstance.post('/entreprise/completer', data, {
+        headers: {
+          Authorization: `Bearer ${token}`,
 
-      setStatus({ success: data.message || "Profil enregistré avec succès", error: null });
-      setTimeout(() => navigate('/dashboard/entreprise'), 2000);
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      setMessage(response.data.message);
     } catch (err) {
-      console.error("Erreur complète:", err);
-      
-      if (err.response?.status === 401) {
-        localStorage.removeItem('token');
-        setStatus({ 
-          error: "Session expirée - Veuillez vous reconnecter", 
-          success: null 
-        });
-        setTimeout(() => navigate('/login'), 2000);
+      if (err.response && err.response.data) {
+        setError(err.response.data.message || 'Erreur lors de l’envoi');
       } else {
-        const errorMsg = err.response?.data?.message || 
-                        err.response?.data?.error || 
-                        "Une erreur est survenue lors de l'enregistrement";
-        setStatus({ error: errorMsg, success: null });
+        setError('Erreur inattendue');
       }
-    } finally {
-      setIsSubmitting(false);
     }
   };
 
-  // ... (le reste de votre JSX reste inchangé)
-};
+  return (
+    <div className="container mt-4">
+      <h2>Compléter votre profil d'entreprise</h2>
+      {message && <div className="alert alert-success">{message}</div>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
-// Composant FormField (identique à votre version)
-const FormField = ({ label, name, value, onChange, required, type = 'text', placeholder }) => (
-  <div>
-    <label className="block text-sm font-medium text-gray-700 mb-1">
-      {label} {required && <span className="text-red-500">*</span>}
-    </label>
-    <input
-      type={type}
-      name={name}
-      value={value}
-      onChange={onChange}
-      required={required}
-      className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:ring-2 focus:ring-yellow-400 focus:border-transparent transition"
-      placeholder={placeholder}
-    />
-  </div>
-);
+      <form onSubmit={handleSubmit} encType="multipart/form-data">
+        <div className="form-group">
+          <label>Nom de l’entreprise</label>
+          <input
+            type="text"
+            name="nom_entreprise"
+            className="form-control"
+            value={formData.nom_entreprise}
+            onChange={handleChange}
+            required
+          />
+        </div>
 
-export default EntrepriseProfilForm;
+        <div className="form-group mt-2">
+          <label>IFU</label>
+          <input
+            type="text"
+            name="IFU"
+            className="form-control"
+            value={formData.IFU}
+            onChange={handleChange}
+            required
+          />
+        </div>
+
+        <div className="form-group mt-2">
+          <label>RCCM</label>
+          <input
+            type="text"
+            name="RCCM"
+            className="form-control"
+            value={formData.RCCM}
+            onChange={handleChange}
+          />
+        </div>
+
+        <div className="form-group mt-2">
+          <label>Logo (jpg, jpeg, png)</label>
+          <input
+            type="file"
+            name="logo"
+            className="form-control"
+            accept="image/png, image/jpeg"
+            onChange={handleChange}
+          />
+        </div>
+
+        <button type="submit" className="btn btn-primary mt-3">
+          Enregistrer
+        </button>
+      </form>
+    </div>
+  );
+}

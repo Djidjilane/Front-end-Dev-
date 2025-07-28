@@ -31,7 +31,7 @@ import CreerProjet from "./v1/pages/Jobs/CreateProjet";
 import CreerOffreStage from "./v1/pages/Jobs/CreateOffreStage";
 import ListeProjets from "./v1/pages/Jobs/ListeProjet";
 import ChoisirEntreprise from "./v1/pages/Jobs/ChoisirEntreprise";
-import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";
+/*import ListeCandidats from "./v1/pages/Jobs/ListeCandidature";*/
 import ListecCandidats from "./v1/pages/Jobs/CandidatureStages";
 import ListeEntreprises from "./v1/pages/Jobs/Listeentreprise" 
 import ListePartenaires from "./v1/pages/Jobs/ListePartnaire";
@@ -51,13 +51,13 @@ import MesCandidaturesProjets from "./v1/pages/Jobs/MesCandidaturesProjets";
 import VoirCandidaturesStage from "./v1/pages/Jobs/CandidatureStages";
 import MesCandidaturesOuvrier from "./v1/pages/Jobs/CandidatureOuvrier";
 import EntrepriseProfilForm from "./v1/pages/auth/Profil/Entreprise";
-
+import MesCandidatures from "./v1/pages/Jobs/MesCandidaturesOuvriers";
 import RequireAuth from "./v1/pages/auth/RequireAuth";
-
-
 import TousOffre from "./v1/pages/Jobs/TousOffres";
 import FormulaireCandidatureStage from "./v1/pages/Jobs/CandidatureStage";
 import MesCandidaturesStagiare from "./v1/pages/Jobs/CandidatureStagiaire";
+
+import OuvrierProfilForm from "./v1/pages/auth/Profil/Ouvrier";
 const App = () => {
   return (
     <Router>
@@ -106,12 +106,13 @@ const App = () => {
 
                               {/* entreprise */}
         <Route path="/entreprise/profil" element={<EntrepriseProfilForm />} />
+        <Route path="ouvrier/profil" element={<OuvrierProfilForm />} />
 
 
         <Route path="/entreprise/offreEmploi" element={<MesOffresEmploi />} />
         <Route path="/entreprise/offreStage" element={<MesOffresStage />} />
         <Route path="/entreprise/candidatures/:id" element={<VoirCandidatures />} />
-        <Route path="/candidatur/liste" element={<ListeCandidats/>} />
+        {/*<Route path="/candidatur/liste" element={<ListeCandidats/>} />*/}
         <Route path="create/projet" element={<CreerProjet/>} />
         <Route path="/offre/create/emploi" element={<CreerOffreEmploi/>} />
         <Route path="/offre/create/stage" element={<CreateOffreForm/>} />
@@ -128,6 +129,7 @@ const App = () => {
         <Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />
         <Route path="/ouvrier/candidature" element={<MesCandidaturesOuvrier/>}/>
         <Route path="/stagiaire/candidature" element={<MesCandidaturesStagiare/>}/>
+        <Route path="/candidature" element={<MesCandidatures/>}/>
 
         <Route path="/dtl" element={<DetailsOffre/>} />
         <Route path="/postuler" element={<PostulerPage/>} />

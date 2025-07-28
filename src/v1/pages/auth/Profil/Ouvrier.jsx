@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axiosInstance from '../../../api/axiosInstance';
+import axiosInstance from '../../../../api/axiosInstance';
 
 const OuvrierProfilForm = () => {
   const [formData, setFormData] = useState({
@@ -9,6 +9,7 @@ const OuvrierProfilForm = () => {
     diplome: null,
     certifications: null,
   });
+  const token = localStorage.getItem('token');
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
@@ -39,6 +40,8 @@ const OuvrierProfilForm = () => {
     try {
       const response = await axiosInstance.post('/ouvrier/completer', data, {
         headers: {
+          Authorization: `Bearer ${token}`,
+
           'Content-Type': 'multipart/form-data',
         },
       });

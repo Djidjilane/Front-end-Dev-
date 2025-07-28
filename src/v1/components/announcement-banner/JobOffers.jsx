@@ -7,17 +7,14 @@ const JobOffers = () => {
   const [offres, setOffres] = useState([]);
 
   useEffect(() => {
-    axiosInstance.get("/offreEmploiRecents")
+    axiosInstance.get("/offreEmploiRecentes")
       .then((res) => {
         // Ici res.data est un tableau d'offres
-        const data = res.data.map((offre) => ({
+        const data = res.data.offres.map((offre) => ({
           title: offre.projet,
           company: offre.description,
-          location: offre.lieu,
-          date_limite: offre.date_limite,
-         /* type: 'CDI',          // par défaut
-          salary: 'À négocier', // par défaut
-          urgent: false         // par défaut*/
+         
+         
         }));
         setOffres(data);
       })
@@ -55,7 +52,7 @@ const JobOffers = () => {
                 <p className="text-gray-600 mt-1">{offre.company}</p>
                 
                 <div className="mt-6 space-y-3">
-                  <div className="flex items-center text-gray-600">
+                  {/*<div className="flex items-center text-gray-600">
                     <MapPinIcon className="h-5 w-5 mr-2" />
                     <span>{offre.location}</span>
                   </div>
@@ -66,7 +63,7 @@ const JobOffers = () => {
                   <div className="flex items-center text-gray-600">
                     <CurrencyEuroIcon className="h-5 w-5 mr-2" />
                     <span>{offre.salary} annuel</span>
-                  </div>
+                  </div>*/}
                 </div>
                 
                 <button className="px-3 w-full mt-6 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
