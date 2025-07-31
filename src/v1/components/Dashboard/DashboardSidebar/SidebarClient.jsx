@@ -17,7 +17,6 @@ const SidebarClient = () => {
 
   const links = [
     { label: 'Profil', icon: UserIcon, path:'/dashboard/client' },
-    { label: 'Partenaires Commerciaux', icon: UsersIcon, path:'/partenaires' },
     { label: 'Entreprise', icon: BriefcaseIcon, path:'/entreprise' },
     { label: 'Projets', icon: ClipboardDocumentIcon, path:'/projet/liste' },
     { label: 'Settings', icon: Cog6ToothIcon },
@@ -46,23 +45,23 @@ const SidebarClient = () => {
           <BuildingOffice2Icon className="h-6 w-6 text-white mx-auto" />
         </div>
         {isOpen && (
-          <h2 className="font-bold text-white text-sm">
-            Recru<span className="text-gray-200">BTP</span>
-          </h2>
+         <h2 className="font-bold text-white text-sm">
+         Recru<span className="text-gray-200">BTP</span>
+       </h2>
         )}
       </div>
 
       {/* Navigation */}
       <nav className="space-y-4">
         {links.map((link, idx) => (
-          <a
+          <Link
             key={idx}
-            href="#"
+            to={link.path}
             className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
           >
             <link.icon className="h-5 w-5" />
             {isOpen && <span>{link.label}</span>}
-          </a>
+          </Link>
         ))}
       </nav>
     </aside>

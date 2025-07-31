@@ -14,7 +14,7 @@ const Footer = () => {
               <span className="text-xl font-bold">BTPConnect</span>
             </div>
             <p className="text-gray-400 mb-4">
-              La plateforme premium pour les professionnels du BTP et les fournisseurs de matériaux.
+              La plateforme premium pour les professionnels du BTP.
             </p>
             <div className="flex space-x-4">
               <Link to="#" className="text-gray-400 hover:text-white transition">
@@ -36,11 +36,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Liens Rapides</h3>
             <ul className="space-y-2">
-              <li><Link to="#" className="text-gray-400 hover:text-white transition">Accueil</Link></li>
+              <li><Link to="/" className="text-gray-400 hover:text-white transition">Accueil</Link></li>
               <li><Link to="#" className="text-gray-400 hover:text-white transition">À propos</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white transition">Offres d'emploi</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white transition">Matériaux</Link></li>
-              <li><Link to="#" className="text-gray-400 hover:text-white transition">Contact</Link></li>
+              <li><Link to="/offre/entreprise" className="text-gray-400 hover:text-white transition">Offres d'emploi</Link></li>
+              <li><Link to="/contact" className="text-gray-400 hover:text-white transition">Contact</Link></li>
             </ul>
           </div>
           
@@ -60,10 +59,10 @@ const Footer = () => {
           <div>
             <h3 className="text-lg font-semibold mb-4">Contact</h3>
             <address className="not-italic text-gray-400 space-y-2">
-              <p>123 Avenue des Champs-Élysées</p>
-              <p>75008 Paris, France</p>
+              <p>Atlantique</p>
+              <p>Abomey Calavi, Bénin</p>
               <p>Email: contact@btpconnect.com</p>
-              <p>Tél: +33 1 23 45 67 89</p>
+              <p>Tél: +229 01 40 00 15 50</p>
             </address>
           </div>
         </div>

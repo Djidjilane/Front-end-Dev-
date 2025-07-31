@@ -84,7 +84,6 @@ const Navbar = () => {
             )}
           </div>
 
-          <Link to="/materiaux" className="text-gray-600 hover:text-blue-600 transition">Matériaux</Link>
           <Link to="/entreprise" className="text-gray-600 hover:text-blue-600 transition">Entreprises</Link>
           <Link to="/contact" className="text-gray-600 hover:text-blue-600 transition">Contact</Link>
 

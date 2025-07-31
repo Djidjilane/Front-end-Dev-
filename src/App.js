@@ -126,7 +126,7 @@ const App = () => {
 
                             {/* Ouvrier stagiaire */}
         <Route path="/candidature/stage/:id" element={<FormulaireCandidatureStage/>} />
-        <Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />
+        {/*<Route path="/candidature/emploi/" element={<MesCandidaturesOuvrier/>} />*/}
         <Route path="/ouvrier/candidature" element={<MesCandidaturesOuvrier/>}/>
         <Route path="/stagiaire/candidature" element={<MesCandidaturesStagiare/>}/>
         <Route path="/candidature" element={<MesCandidatures/>}/>

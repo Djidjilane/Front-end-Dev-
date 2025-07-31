@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import SidebarStagiaire from '../../components/Dashboard/DashboardSidebar/SidebarStagiaire';
 
 export default function MesCandidaturesStagiare() {
   const [candidatures, setCandidatures] = useState([]);
@@ -97,8 +98,11 @@ export default function MesCandidaturesStagiare() {
   }
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
-      <h1 className="text-2xl font-bold mb-6 text-center">Mes Candidatures d'Emploi</h1>
+    <div className="flex h-screen bg-gray-50">
+    <SidebarStagiaire />
+    
+    <div className="flex-1 overflow-y-auto p-6">
+      <h1 className="text-2xl font-bold mb-6 text-center">Mes Candidatures de Stage</h1>
       
       {/* Liste des candidatures */}
       <div className="space-y-4">
@@ -190,6 +194,7 @@ export default function MesCandidaturesStagiare() {
           </div>
         </div>
       )}
+    </div>
     </div>
   );
 }

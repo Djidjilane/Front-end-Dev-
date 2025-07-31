@@ -1,7 +1,7 @@
 const stats = [
   { value: "850+", label: "Professionnels" },
   { value: "120+", label: "Entreprises" },
-  { value: "3K+", label: "Matériaux" },
+  //{ value: "3K+", label: "Matériaux" },
   { value: "95%", label: "Satisfaction" }
 ];
 

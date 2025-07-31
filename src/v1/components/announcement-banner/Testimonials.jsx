@@ -8,7 +8,7 @@ const testimonials = [
     avatar: "/img/testimonial-2.jpg"
   },
   {
-    quote: "En tant que fournisseur, la visibilité apportée par BTPConnect a boosté nos ventes de plus de 30%.",
+    quote: "En tant que client, la visibilité apportée par BTPConnect m'a permis de contacter des entreprises compétantes pour la suivie de mes projets de construction.",
     name: "Sophie Martin",
     role: "Responsable Commerciale, Saint-Gobain",
     avatar: "/img/testimonial-1.jpg"

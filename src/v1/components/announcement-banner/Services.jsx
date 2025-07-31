@@ -7,11 +7,11 @@ const services = [
     title: "Recrutement Ciblé",
     description: "Trouvez les ouvriers qualifiés dont vous avez besoin pour vos projets."
   },
-  {
+ /* {
     icon: <BuildingLibraryIcon className="h-10 w-10 text-blue-600" />,
     title: "Matériaux Premium",
     description: "Accédez à un catalogue de matériaux de construction de qualité."
-  },
+  },*/
   {
     icon: <ChartBarIcon className="h-10 w-10 text-blue-600" />,
     title: "Visibilité Accrue",

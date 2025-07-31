@@ -129,7 +129,7 @@ export default function VoirCandidaturesStage() {
           <div className="bg-red-50 border-l-4 border-red-500 p-4 max-w-md">
             <p className="text-red-700">{error}</p>
             <button
-              onClick={() => navigate("/entreprise/offres-stage")}
+              onClick={() => navigate("/entreprise/offreEmploi")}
               className="mt-2 px-3 py-1 bg-red-600 text-white rounded text-sm"
             >
               Retour aux offres
@@ -157,7 +157,7 @@ export default function VoirCandidaturesStage() {
                 </p>
               </div>
               <button
-                onClick={() => navigate("/entreprise/offres-stage")}
+                onClick={() => navigate("/entreprise/offreEmploi")}
                 className="flex items-center text-sm text-blue-600 hover:text-blue-800"
               >
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">

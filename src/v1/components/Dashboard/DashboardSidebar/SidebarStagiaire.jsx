@@ -16,8 +16,8 @@ const SidebarStagiaire = () => {
 
   const links = [
     { label: 'Profil', icon: UserIcon, path: '/dahboard/stagiare' },
-    { label: 'Offres de Stage postulé', icon: AcademicCapIcon, path:'/offre/stage' },
-    { label: 'Settings', icon: Cog6ToothIcon, path:'/' },
+    { label: 'Offres de Stage postulé', icon: AcademicCapIcon, path:'/stagiaire/candidature' },
+    { label: 'Settings', icon: Cog6ToothIcon, path:'#' },
   ];
 
   return (
@@ -52,14 +52,14 @@ const SidebarStagiaire = () => {
       {/* Navigation */}
       <nav className="space-y-4">
         {links.map((link, idx) => (
-          <a
+          <Link
             key={idx}
-            href="#"
+            to={link.path}
             className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
           >
             <link.icon className="h-5 w-5" />
             {isOpen && <span>{link.label}</span>}
-          </a>
+          </Link>
         ))}
       </nav>
     </aside>

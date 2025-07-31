@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { Link } from 'react-router-dom';
+
 import {
   ChevronDoubleLeftIcon,
   ChevronDoubleRightIcon,
@@ -16,9 +18,8 @@ const SidebarOuvrier = () => {
 
   const links = [
     { label: 'Profil', icon: UserIcon, path:'/dashboard/ouvrier' },
-    { label: 'Projet', icon: ClipboardDocumentIcon, path:'/projet/liste' },
-    { label: 'Entreprise', icon: BriefcaseIcon, path:'/entrprise' },
-    { label: 'Equipes de projet', icon: UsersIcon, path:'/' },
+    { label: 'Mes candidatures', icon: ClipboardDocumentIcon, path:'/ouvrier/candidature' },
+    { label: 'Entreprise', icon: BriefcaseIcon, path:'/entreprise' },
     { label: 'Settings', icon: Cog6ToothIcon }
   ];
 
@@ -44,22 +45,25 @@ const SidebarOuvrier = () => {
         <div className="flex justify-center mb-1">
           <BuildingOfficeIcon className="h-6 w-6 text-white mx-auto" />
         </div>
-        {isOpen && <h2 className="font-bold text-white text-sm">BTPConnect</h2>}
+        {isOpen && 
+        <h2 className="font-bold text-white text-sm">
+        Recru<span className="text-gray-200">BTP</span>
+      </h2>}
       </div>
 
       {/* Navigation */}
-      <nav className="space-y-4">
-        {links.map((link, idx) => (
-          <a
-            key={idx}
-            href="#"
-            className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
-          >
-            <link.icon className="h-5 w-5" />
-            {isOpen && <span>{link.label}</span>}
-          </a>
-        ))}
-      </nav>
+        <nav className="space-y-4">
+              {links.map((link, idx) => (
+                <Link
+                  key={idx}
+                  to={link.path}
+                  className="flex items-center gap-2 text-gray-700 hover:text-blue-600"
+                >
+                  <link.icon className="h-5 w-5" />
+                  {isOpen && <span>{link.label}</span>}
+                </Link>
+              ))}
+            </nav>
     </aside>
   );
 };

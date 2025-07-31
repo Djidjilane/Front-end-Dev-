@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 const CTA = () => {
   return (
     <section className="py-16 bg-gray-900 text-white">
@@ -7,12 +9,16 @@ const CTA = () => {
           Rejoignez la plateforme premium qui connecte les professionnels du bâtiment et les fournisseurs de matériaux.
         </p>
         <div className="flex flex-col sm:flex-row justify-center space-y-4 sm:space-y-0 sm:space-x-4">
+          <Link to="/register">
           <button className="px-3 w-fit py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 transition">
             Inscription Entreprise
           </button>
+          </Link>
+          <Link to="/register">
           <button className="px-3 w-fit py-2 bg-white text-gray-900 rounded-md hover:bg-gray-100 transition">
             Inscription Professionnel
           </button>
+          </Link>
         </div>
       </div>
     </section>

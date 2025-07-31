@@ -11,7 +11,7 @@ const Hero = () => {
             La plateforme premium du <span className="text-blue-600">BTP</span>
           </h1>
           <p className="text-lg text-gray-600 mb-8">
-            Connectez les talents aux opportunités et découvrez les meilleurs matériaux de construction.
+            Connectez les talents aux opportunités  de construction.
             Une solution complète pour les professionnels du bâtiment.
           </p>
           <div className="flex flex-col sm:flex-row space-y-4 sm:space-y-0 sm:space-x-4">
@@ -20,9 +20,9 @@ const Hero = () => {
                 Trouver un emploi <ArrowRightIcon className="ml-2 h-5 w-5" />
               </button>
             </Link>
-            <button className="px-3 w-fit py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition flex items-center justify-center">
+            {/*<button className="px-3 w-fit py-2 border border-blue-600 text-blue-600 rounded-md hover:bg-blue-50 transition flex items-center justify-center">
               Voir les matériaux <BuildingStorefrontIcon className="ml-2 h-5 w-5" />
-            </button>
+            </button>*/}
           </div>
         </div>
         
@@ -43,7 +43,7 @@ const Hero = () => {
                     <UserGroupIcon className="h-6 w-6 text-blue-600" />
                   </div>
                   <div>
-                    <p className="font-medium text-gray-800">+850 Professionnels</p>
+                    <p className="font-medium text-gray-800">+85 Professionnels</p>
                     <p className="text-sm text-gray-500">Actifs sur la plateforme</p>
                   </div>
                 </div>

@@ -16,7 +16,6 @@ const Welcome = () => {
               <Services />
               <Companies />
               <JobOffers />
-              <Materials />
               <Testimonials />
               <Stats />
               <CTA />

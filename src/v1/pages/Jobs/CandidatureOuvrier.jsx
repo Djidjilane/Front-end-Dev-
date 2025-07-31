@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { useNavigate, useLocation } from 'react-router-dom';
+import SidebarOuvrier from '../../components/Dashboard/DashboardSidebar/SidebarOuvrier';
 
 export default function MesCandidaturesOuvrier() {
   const [candidatures, setCandidatures] = useState([]);
@@ -97,9 +98,14 @@ export default function MesCandidaturesOuvrier() {
   }
 
   return (
-    <div className="p-4 max-w-4xl mx-auto">
+    <div className="flex h-screen bg-gray-50">
+    <SidebarOuvrier />
+    
+    <div className="flex-1 overflow-y-auto p-6">
+
+
       <h1 className="text-2xl font-bold mb-6 text-center">Mes Candidatures d'Emploi</h1>
-      
+
       {/* Liste des candidatures */}
       <div className="space-y-4">
         {candidatures.length === 0 ? (
@@ -140,7 +146,7 @@ export default function MesCandidaturesOuvrier() {
           ))
         )}
       </div>
-
+</div>
       {/* Modal Non Connecté */}
       {showNotConnectedModal && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
